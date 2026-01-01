@@ -48,7 +48,6 @@ jobs:
       - name: Set Cache-Control headers
         run: |
           gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" "gs://${{ env.GCS_BUCKET }}/assets/**"
-          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" "gs://${{ env.GCS_BUCKET }}/fonts/**"
           gsutil -m setmeta -h "Cache-Control:public, max-age=0, must-revalidate" "gs://${{ env.GCS_BUCKET }}/index.html"
 
       - name: Invalidate CDN cache
