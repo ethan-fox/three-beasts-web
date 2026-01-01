@@ -1,0 +1,64 @@
+name: Deploy to GCP
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+env:
+  GCS_BUCKET: three-beasts-web-frontend
+  URL_MAP_NAME: frontend-url-map
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create production environment file
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" > .env.production
+
+      - name: Build application
+        run: npm run build
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Upload to Cloud Storage
+        run: |
+          gsutil -m rsync -r -d dist/ gs://${{ env.GCS_BUCKET }}/
+
+      - name: Set Cache-Control headers
+        run: |
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" "gs://${{ env.GCS_BUCKET }}/assets/**"
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" "gs://${{ env.GCS_BUCKET }}/fonts/**"
+          gsutil -m setmeta -h "Cache-Control:public, max-age=0, must-revalidate" "gs://${{ env.GCS_BUCKET }}/index.html"
+
+      - name: Invalidate CDN cache
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache ${{ env.URL_MAP_NAME }} \
+            --path "/*" \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --async
+
+      - name: Deployment complete
+        run: |
+          echo "✅ Deployment successful!"
+          echo "📦 Version: ${{ github.ref_name }}"
