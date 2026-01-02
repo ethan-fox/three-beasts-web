@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant touch (@media (pointer: coarse));
+@custom-variant desktop (@media (pointer: fine));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

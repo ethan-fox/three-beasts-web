@@ -1,7 +1,6 @@
 import type { PuzzleView } from "@/model/view/PuzzleView";
-import MobilePuzzleDisplay from "./MobilePuzzleDisplay";
+import MobilePuzzleDisplay from "./MobilePuzzleDisplay/MobilePuzzleDisplay";
 import DesktopPuzzleDisplay from "./DesktopPuzzleDisplay";
-import { useEffect, useState } from "react";
 
 interface PuzzleDisplayProps {
   puzzles: PuzzleView[];
@@ -10,22 +9,15 @@ interface PuzzleDisplayProps {
 }
 
 const PuzzleDisplay = (props: PuzzleDisplayProps) => {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  return isMobile ? (
-    <MobilePuzzleDisplay {...props} />
-  ) : (
-    <DesktopPuzzleDisplay {...props} />
+  return (
+    <>
+      <div className="touch:block desktop:hidden">
+        <MobilePuzzleDisplay {...props} />
+      </div>
+      <div className="touch:hidden desktop:block">
+        <DesktopPuzzleDisplay {...props} />
+      </div>
+    </>
   );
 };
 

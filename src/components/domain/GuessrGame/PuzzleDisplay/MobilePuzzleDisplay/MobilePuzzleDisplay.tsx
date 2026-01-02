@@ -8,8 +8,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import type { PuzzleView } from "@/model/view/PuzzleView";
-import PuzzleCard from "../../PuzzleCard/PuzzleCard";
-import { cn } from "@/lib/utils";
+import PuzzleCard from "@/components/domain/PuzzleCard/PuzzleCard";
+import CarouselHints from "@/components/domain/GuessrGame/PuzzleDisplay/MobilePuzzleDisplay/CarouselHints/CarouselHints";
 
 interface MobilePuzzleDisplayProps {
   puzzles: PuzzleView[];
@@ -40,22 +40,7 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange }: MobilePuzzleDi
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="flex flex-col items-center gap-2 mb-4">
-        <p className="text-sm text-muted-foreground md:hidden">Swipe to view each puzzle</p>
-        <div className="flex gap-2">
-          {puzzles.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => api?.scrollTo(index)}
-              className={cn(
-                "h-2 rounded-full transition-all",
-                current === index ? "w-6 bg-primary" : "w-2 bg-muted-foreground/30"
-              )}
-              aria-label={`Go to puzzle ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
+      <CarouselHints puzzleCount={puzzles.length} currentIndex={current} api={api} />
 
       <Carousel setApi={setApi} className="w-full">
         <CarouselContent>
@@ -70,8 +55,8 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange }: MobilePuzzleDi
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden md:flex" />
-        <CarouselNext className="hidden md:flex" />
+        <CarouselPrevious className="touch:hidden desktop:flex" />
+        <CarouselNext className="touch:hidden desktop:flex" />
       </Carousel>
     </div>
   );

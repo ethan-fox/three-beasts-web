@@ -60,12 +60,13 @@ const HowToPlay = () => {
       </TooltipProvider>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>How to Play</DialogTitle>
-          </DialogHeader>
-          <div className="mt-4">
-            {isLoading && <p>Loading...</p>}
+        <DialogContent className="max-h-[90vh] max-w-[90vw] md:max-w-2xl flex flex-col p-0">
+          <div className="sticky top-0 bg-background rounded-t-lg px-6 pt-6 pb-4 border-b">
+            <DialogHeader>
+              <DialogTitle>How to Play</DialogTitle>
+            </DialogHeader>
+          </div>
+          <div className="overflow-y-auto px-6 py-6">
             {error && <p className="text-destructive">{error}</p>}
             {howToPlay && <div className="whitespace-pre-wrap">{howToPlay.content}</div>}
           </div>

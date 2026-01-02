@@ -1,9 +1,14 @@
 import GaugeComponent from "react-gauge-component";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Card,
   CardHeader,
   CardContent,
-  CardFooter,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,25 +25,41 @@ const ResultsModal = ({ results, guesses, onClose }: ResultsModalProps) => {
     return Math.round((score / 33) * 100);
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="max-w-4xl w-full">
-        <CardHeader>
-          <h2 className="text-2xl font-bold text-center">Results</h2>
-        </CardHeader>
+  const getMotivationalMessage = (score: number): string => {
+    if (score === 100) {
+      return "Perfect! You're a savant.";
+    } else if (score >= 84) {
+      return "You know your stuff!";
+    } else if (score >= 69) {
+      return "Well done, I'm impressed.";
+    } else if (score >= 49) {
+      return "Not bad! You're on your way.";
+    } else if (score >= 29) {
+      return "Keep practicing!";
+    } else {
+      return "Better luck next time.";
+    }
+  };
 
-        <CardContent className="space-y-6">
-          <div className="flex justify-center">
+  return (
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="max-h-[90vh] max-w-[90vw] md:max-w-4xl flex flex-col p-0">
+        <div className="sticky top-0 bg-background rounded-t-lg px-6 pt-6 pb-4 border-b">
+          <DialogHeader>
+            <DialogTitle className="text-center">Results</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center gap-4 mt-6">
             <GaugeComponent
               type="semicircle"
               arc={{
                 padding: 0.02,
                 colorArray: ["#ef4444", "#22c55e"],
                 subArcs: [
-                  { limit: 50 },
-                  { limit: 70 },
-                  { limit: 80 },
-                  { limit: 90 },
+                  { limit: 29 },
+                  { limit: 49 },
+                  { limit: 69 },
+                  { limit: 84 },
                   {},
                 ],
               }}
@@ -58,9 +79,14 @@ const ResultsModal = ({ results, guesses, onClose }: ResultsModalProps) => {
               minValue={0}
               maxValue={100}
             />
+            <p className="text-lg font-semibold text-center">
+              {getMotivationalMessage(results.overall_score)}
+            </p>
           </div>
+        </div>
 
-          <div className="flex justify-center gap-4 px-4">
+        <div className="overflow-y-auto px-6 py-6">
+          <div className="flex justify-center gap-4">
             {results.results.map((result, index) => {
               const userGuess = guesses.get(result.id);
               const accuracy = calculateAccuracy(result.score);
@@ -94,15 +120,15 @@ const ResultsModal = ({ results, guesses, onClose }: ResultsModalProps) => {
               );
             })}
           </div>
-        </CardContent>
 
-        <CardFooter>
-          <Button onClick={onClose} className="w-full">
-            Play Again
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
+          <div className="mt-6">
+            <Button onClick={onClose} className="w-full">
+              Play Again
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
