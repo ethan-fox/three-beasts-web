@@ -3,9 +3,11 @@ import { useGuessrGame } from "@/hook/useGuessrGame";
 import DateSelector from "./DateSelector/DateSelector";
 import PuzzleDisplay from "./PuzzleDisplay/PuzzleDisplay";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Kbd } from "@/components/ui/kbd";
 import { areAllPuzzlesComplete } from "@/util/puzzleUtil";
 import ResultsModal from "../ResultsModal/ResultsModal";
+import ResultsContent from "../ResultsContent/ResultsContent";
 import HowToPlay from "../HowToPlay/HowToPlay";
 
 const GuessrGame = () => {
@@ -19,6 +21,8 @@ const GuessrGame = () => {
     handleSubmit,
     results,
     isSubmitting,
+    completedPuzzle,
+    clearResults,
   } = useGuessrGame();
 
   const canSubmit = puzzles
@@ -64,7 +68,17 @@ const GuessrGame = () => {
         <div className="text-center py-8 text-red-600">Error: {error}</div>
       )}
 
-      {puzzles && (
+      {completedPuzzle && (
+        <Card className="mt-8">
+          <ResultsContent
+            results={completedPuzzle.results}
+            guesses={new Map(Object.entries(completedPuzzle.guesses).map(([k, v]) => [Number(k), v]))}
+            showGauge={true}
+          />
+        </Card>
+      )}
+
+      {!completedPuzzle && puzzles && (
         <>
           <PuzzleDisplay
             puzzles={puzzles.puzzles}
@@ -98,7 +112,7 @@ const GuessrGame = () => {
         <ResultsModal
           results={results}
           guesses={guesses}
-          onClose={() => window.location.reload()}
+          onClose={clearResults}
         />
       )}
     </div>

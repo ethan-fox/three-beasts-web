@@ -3,7 +3,11 @@ import { guessrClient } from "@/client/GuessrClient";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 import type { GuessSubmission } from "@/model/api/GuessSubmission";
 
-export const useSubmitGuesses = () => {
+interface UseSubmitGuessesOptions {
+  onCompletionSaved?: (results: BatchGuessValidationView) => void;
+}
+
+export const useSubmitGuesses = (options?: UseSubmitGuessesOptions) => {
   const [results, setResults] = useState<BatchGuessValidationView | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,6 +19,10 @@ export const useSubmitGuesses = () => {
     try {
       const validationResults = await guessrClient.submitGuesses(guessrId, submission);
       setResults(validationResults);
+
+      if (options?.onCompletionSaved) {
+        options.onCompletionSaved(validationResults);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit guesses");
     } finally {
@@ -22,5 +30,9 @@ export const useSubmitGuesses = () => {
     }
   };
 
-  return { submitGuesses, results, isLoading, error };
+  const clearResults = () => {
+    setResults(null);
+  };
+
+  return { submitGuesses, results, isLoading, error, clearResults };
 };
