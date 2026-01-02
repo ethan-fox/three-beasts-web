@@ -73,7 +73,6 @@ const GuessrGame = () => {
           <ResultsContent
             results={completedPuzzle.results}
             guesses={new Map(Object.entries(completedPuzzle.guesses).map(([k, v]) => [Number(k), v]))}
-            showGauge={true}
           />
         </Card>
       )}

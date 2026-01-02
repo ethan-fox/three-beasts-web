@@ -14,17 +14,13 @@ interface ResultsContentProps {
 const ResultsContent = ({
   results,
   guesses,
-  showGauge = true,
-  className
+  className,
 }: ResultsContentProps) => {
   return (
     <div className={cn("flex flex-col", className)}>
-      {/* Gauge Section */}
-      {showGauge && (
-        <div className="px-6 py-6 border-b">
-          <ResultGauge score={results.overall_score} />
-        </div>
-      )}
+      <div className="px-6 py-6 border-b">
+        <ResultGauge score={results.overall_score} />
+      </div>
 
       {/* Puzzle Cards Section */}
       <div className="px-6 py-6">
@@ -36,15 +32,11 @@ const ResultsContent = ({
             return (
               <Card key={result.id} className="flex-1 max-w-xs">
                 <CardHeader>
-                  <CardTitle className="text-lg">
-                    Puzzle {index + 1}
-                  </CardTitle>
+                  <CardTitle className="text-lg">Puzzle {index + 1}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Your Answer
-                    </p>
+                    <p className="text-sm text-muted-foreground">Your Answer</p>
                     <p className="font-semibold">{userGuess ?? "No guess"}</p>
                   </div>
                   <div>

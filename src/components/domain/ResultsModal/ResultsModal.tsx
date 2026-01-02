@@ -27,7 +27,6 @@ const ResultsModal = ({ results, guesses, onClose }: ResultsModalProps) => {
           <ResultsContent
             results={results}
             guesses={guesses}
-            showGauge={true}
           />
         </div>
       </DialogContent>
