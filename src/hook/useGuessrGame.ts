@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGetPuzzles } from "./useGetPuzzles";
 import { useSubmitGuesses } from "./useSubmitGuesses";
@@ -35,15 +35,18 @@ export const useGuessrGame = () => {
   const { puzzles, isLoading, error } = useGetPuzzles(dateString);
   const { submitGuesses, results, isLoading: isSubmitting, error: submitError } = useSubmitGuesses();
 
-  useEffect(() => {
-    if (puzzles) {
-      const initialGuesses = new Map<number, number | null>();
-      puzzles.puzzles.forEach((puzzle) => {
-        initialGuesses.set(puzzle.id, null);
-      });
-      setGuesses(initialGuesses);
-    }
+  const initialGuesses = useMemo(() => {
+    if (!puzzles) return new Map<number, number | null>();
+    const guessMap = new Map<number, number | null>();
+    puzzles.puzzles.forEach((puzzle) => {
+      guessMap.set(puzzle.id, null);
+    });
+    return guessMap;
   }, [puzzles]);
+
+  useEffect(() => {
+    setGuesses(initialGuesses);
+  }, [initialGuesses]);
 
   const setGuess = (puzzleId: number, year: number | null) => {
     setGuesses((prev) => {
@@ -57,7 +60,7 @@ export const useGuessrGame = () => {
     if (!puzzles) return;
 
     const guessArray = Array.from(guesses.entries())
-      .filter(([_, year]) => year !== null)
+      .filter(([, year]) => year !== null)
       .map(([id, year]) => ({ id, year: year! }));
 
     const submission: GuessSubmission = {

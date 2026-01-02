@@ -18,21 +18,17 @@ import type { HowToPlayView } from "@/model/view/HowToPlayView";
 const HowToPlay = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [howToPlay, setHowToPlay] = useState<HowToPlayView | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen && !howToPlay) {
       const fetchContent = async () => {
-        setIsLoading(true);
         setError(null);
         try {
           const data = await guessrClient.fetchHowToPlay();
           setHowToPlay(data);
         } catch (err) {
           setError(err instanceof Error ? err.message : "Failed to load content");
-        } finally {
-          setIsLoading(false);
         }
       };
 

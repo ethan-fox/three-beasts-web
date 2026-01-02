@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { guessrClient } from "@/client/GuessrClient";
 import type { GuessrListView } from "@/model/view/GuessrListView";
 
@@ -7,7 +7,7 @@ export const useGetPuzzles = (date: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPuzzles = async () => {
+  const fetchPuzzles = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -19,13 +19,13 @@ export const useGetPuzzles = (date: string) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [date]);
 
   useEffect(() => {
     if (date) {
       fetchPuzzles();
     }
-  }, [date]);
+  }, [date, fetchPuzzles]);
 
   return { puzzles, isLoading, error, refetch: fetchPuzzles };
 };

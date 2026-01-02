@@ -3,7 +3,7 @@ import { useGuessrGame } from "@/hook/useGuessrGame";
 import DateSelector from "./DateSelector/DateSelector";
 import PuzzleDisplay from "./PuzzleDisplay/PuzzleDisplay";
 import { Button } from "@/components/ui/button";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { Kbd } from "@/components/ui/kbd";
 import { areAllPuzzlesComplete } from "@/util/puzzleUtil";
 import ResultsModal from "../ResultsModal/ResultsModal";
 import HowToPlay from "../HowToPlay/HowToPlay";
@@ -15,7 +15,6 @@ const GuessrGame = () => {
     puzzles,
     guesses,
     setGuess,
-    isLoading,
     error,
     handleSubmit,
     results,
