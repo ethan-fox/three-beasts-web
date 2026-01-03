@@ -24,6 +24,7 @@ const ResultGauge = ({ score }: ResultGaugeProps) => {
         pointer={{
           type: "arrow",
           animationDelay: 0,
+          color: "#ffffff",
         }}
         labels={{
           valueLabel: {

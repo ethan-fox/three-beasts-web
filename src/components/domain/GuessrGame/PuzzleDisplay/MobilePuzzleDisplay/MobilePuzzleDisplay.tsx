@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import type { PuzzleView } from "@/model/view/PuzzleView";
 import PuzzleCard from "@/components/domain/PuzzleCard/PuzzleCard";
-import CarouselHints from "@/components/domain/GuessrGame/PuzzleDisplay/MobilePuzzleDisplay/CarouselHints/CarouselHints";
+import CarouselHints from "@/components/custom/CarouselHints";
 
 interface MobilePuzzleDisplayProps {
   puzzles: PuzzleView[];
@@ -40,7 +40,12 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange }: MobilePuzzleDi
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <CarouselHints puzzleCount={puzzles.length} currentIndex={current} api={api} />
+      <CarouselHints
+        hint="Swipe to view each puzzle"
+        puzzleCount={puzzles.length}
+        currentIndex={current}
+        api={api}
+      />
 
       <Carousel setApi={setApi} className="w-full">
         <CarouselContent>

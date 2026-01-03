@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGetPuzzles } from "./useGetPuzzles";
+import { useGetSummary } from "./useGetSummary";
 import { useSubmitGuesses } from "./useSubmitGuesses";
 import { formatDateForApi, getCurrentEasternDate } from "@/util/dateUtil";
 import { loadPuzzleCompletion, savePuzzleCompletion, type PuzzleCompletion } from "@/util/storageUtil";
@@ -47,8 +48,11 @@ export const useGuessrGame = () => {
 
   const dateString = formatDateForApi(selectedDate);
   const { puzzles, isLoading, error } = useGetPuzzles(completedPuzzle ? null : dateString);
+  const { summary, isLoading: isSummaryLoading, error: summaryError } = useGetSummary();
 
   const handleCompletionSaved = useCallback((results: BatchGuessValidationView) => {
+    if (!puzzles) return;
+
     const dateStr = formatDateForApi(selectedDate);
     const validGuesses = new Map(
       Array.from(guesses.entries())
@@ -56,19 +60,25 @@ export const useGuessrGame = () => {
         .map(([id, guess]) => [id, guess as number])
     );
 
-    savePuzzleCompletion(dateStr, validGuesses, results);
+    savePuzzleCompletion(dateStr, puzzles.id, validGuesses, results);
 
     setCompletedPuzzle({
+      puzzleId: puzzles.id,
       guesses: Object.fromEntries(validGuesses),
       results,
       completedAt: new Date().toISOString(),
       version: 1,
     });
-  }, [selectedDate, guesses]);
+  }, [selectedDate, guesses, puzzles]);
 
   const { submitGuesses, results, isLoading: isSubmitting, error: submitError, clearResults } = useSubmitGuesses({
     onCompletionSaved: handleCompletionSaved,
   });
+
+  // Clear results when date changes
+  useEffect(() => {
+    clearResults();
+  }, [selectedDate, clearResults]);
 
   const initialGuesses = useMemo(() => {
     if (!puzzles) return new Map<number, number | null>();
@@ -109,10 +119,11 @@ export const useGuessrGame = () => {
     selectedDate,
     setSelectedDate,
     puzzles,
+    summary,
     guesses,
     setGuess,
-    isLoading,
-    error,
+    isLoading: isLoading || isSummaryLoading,
+    error: error || summaryError,
     handleSubmit,
     results,
     isSubmitting,

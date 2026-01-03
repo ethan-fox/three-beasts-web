@@ -24,7 +24,7 @@ const YearPicker = ({ value, onChange, minYear, maxYear, disabled }: YearPickerP
       onChange={handleChange}
       placeholder={`${minYear}-${maxYear}`}
       disabled={disabled}
-      className="text-center"
+      className="text-center transition-all duration-200 hover:border-primary hover:shadow-[0_0_0_1px] hover:shadow-primary focus:border-primary focus:shadow-[0_0_0_2px] focus:shadow-primary"
     />
   );
 };

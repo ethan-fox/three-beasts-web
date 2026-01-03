@@ -21,7 +21,7 @@ const PuzzleCard = ({ puzzle, puzzleNumber, yearGuess, onYearChange, disabled }:
           disabled={disabled}
         />
 
-        <PlayerTable players={puzzle.players} />
+        <PlayerTable players={puzzle.players} stat={puzzle.hints.stat} />
       </CardContent>
     </Card>
   );

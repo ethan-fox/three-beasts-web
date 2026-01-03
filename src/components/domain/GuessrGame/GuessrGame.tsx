@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Kbd } from "@/components/ui/kbd";
 import { areAllPuzzlesComplete } from "@/util/puzzleUtil";
-import ResultsModal from "../ResultsModal/ResultsModal";
 import ResultsContent from "../ResultsContent/ResultsContent";
 import HowToPlay from "../HowToPlay/HowToPlay";
 
@@ -15,6 +14,7 @@ const GuessrGame = () => {
     selectedDate,
     setSelectedDate,
     puzzles,
+    summary,
     guesses,
     setGuess,
     error,
@@ -22,7 +22,6 @@ const GuessrGame = () => {
     results,
     isSubmitting,
     completedPuzzle,
-    clearResults,
   } = useGuessrGame();
 
   const canSubmit = puzzles
@@ -44,9 +43,9 @@ const GuessrGame = () => {
   }, [canSubmit, isSubmitting, handleSubmit]);
 
   return (
-    <div className="container mx-auto p-[clamp(1rem,4vw,4rem)]">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-[clamp(1rem,2vh,2rem)]">
-        The Three Beasts{puzzles ? ` #${puzzles.id}` : ""}
+    <div className="container mx-auto px-[clamp(1rem,4vw,4rem)] pt-[clamp(1rem,4vw,4rem)] pb-[clamp(2rem,6vh,6rem)]">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-[clamp(1rem,2vh,2rem)] text-primary">
+        The Three Beasts
       </h1>
 
       <p className="text-center text-muted-foreground mb-[clamp(2rem,4vh,4rem)]">
@@ -57,7 +56,7 @@ const GuessrGame = () => {
         <DateSelector
           value={selectedDate}
           onChange={setSelectedDate}
-          guessrId={puzzles?.id}
+          summary={summary}
         />
         <div className="absolute top-0 right-0">
           <HowToPlay />
@@ -68,16 +67,21 @@ const GuessrGame = () => {
         <div className="text-center py-8 text-red-600">Error: {error}</div>
       )}
 
-      {completedPuzzle && (
+      {(completedPuzzle || results) && puzzles && (
         <Card className="mt-8">
           <ResultsContent
-            results={completedPuzzle.results}
-            guesses={new Map(Object.entries(completedPuzzle.guesses).map(([k, v]) => [Number(k), v]))}
+            puzzleId={puzzles.id}
+            results={completedPuzzle?.results || results!}
+            guesses={
+              completedPuzzle
+                ? new Map(Object.entries(completedPuzzle.guesses).map(([k, v]) => [Number(k), v]))
+                : guesses
+            }
           />
         </Card>
       )}
 
-      {!completedPuzzle && puzzles && (
+      {!completedPuzzle && !results && puzzles && (
         <>
           <PuzzleDisplay
             puzzles={puzzles.puzzles}
@@ -85,7 +89,7 @@ const GuessrGame = () => {
             onGuessChange={setGuess}
           />
 
-          <div className="mt-[clamp(2rem,4vh,4rem)] flex justify-center">
+          <div className="mt-[clamp(2rem,4vh,4rem)] mb-[clamp(2rem,4vh,4rem)] flex justify-center">
             <Button
               onClick={handleSubmit}
               disabled={!canSubmit || isSubmitting}
@@ -96,7 +100,7 @@ const GuessrGame = () => {
               ) : (
                 <span className="flex items-center gap-2">
                   Submit Guesses
-                  <Kbd>
+                  <Kbd className="touch:hidden desktop:inline-flex">
                     {navigator.platform.indexOf("Mac") > -1 ? "⌘" : "Ctrl"} +
                     Enter
                   </Kbd>
@@ -105,14 +109,6 @@ const GuessrGame = () => {
             </Button>
           </div>
         </>
-      )}
-
-      {results && (
-        <ResultsModal
-          results={results}
-          guesses={guesses}
-          onClose={clearResults}
-        />
       )}
     </div>
   );

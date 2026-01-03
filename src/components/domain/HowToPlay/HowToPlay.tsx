@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { CircleHelp } from "lucide-react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Dialog,
   DialogContent,
@@ -64,7 +66,43 @@ const HowToPlay = () => {
           </div>
           <div className="overflow-y-auto px-6 py-6">
             {error && <p className="text-destructive">{error}</p>}
-            {howToPlay && <div className="whitespace-pre-wrap">{howToPlay.content}</div>}
+            {howToPlay && (
+              <div className="space-y-4">
+                <Markdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h1: () => null,
+                    h2: ({ children }) => (
+                      <h2 className="text-xl font-bold mb-3">{children}</h2>
+                    ),
+                    p: ({ children }) => (
+                      <p className="text-base mb-4">{children}</p>
+                    ),
+                    strong: ({ children }) => (
+                      <strong className="font-bold">{children}</strong>
+                    ),
+                    em: ({ children }) => (
+                      <em className="italic">{children}</em>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="list-decimal list-inside space-y-2 mb-4 ml-4">
+                        {children}
+                      </ol>
+                    ),
+                    ul: ({ children }) => (
+                      <ul className="list-disc list-inside space-y-2 mb-4 ml-4">
+                        {children}
+                      </ul>
+                    ),
+                    li: ({ children }) => (
+                      <li className="text-base">{children}</li>
+                    ),
+                  }}
+                >
+                  {howToPlay.content}
+                </Markdown>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>

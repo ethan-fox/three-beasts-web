@@ -3,6 +3,7 @@ import type { GuessrListView } from "@/model/view/GuessrListView";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 import type { GuessSubmission } from "@/model/api/GuessSubmission";
 import type { HowToPlayView } from "@/model/view/HowToPlayView";
+import type { GuessrSummaryView } from "@/model/view/GuessrSummaryView";
 
 class GuessrClient {
   async fetchPuzzles(date: string): Promise<GuessrListView> {
@@ -25,6 +26,11 @@ class GuessrClient {
 
   async fetchHowToPlay(): Promise<HowToPlayView> {
     const response = await threeBeastsBackend.get<HowToPlayView>(`/guessr/how-to-play`);
+    return response.data;
+  }
+
+  async fetchSummary(): Promise<GuessrSummaryView[]> {
+    const response = await threeBeastsBackend.get<GuessrSummaryView[]>(`/guessr/summary`);
     return response.data;
   }
 }
