@@ -31,7 +31,7 @@ const STAT_NAME_MAP: Record<string, string> = {
   "SHO": "Shutout",
 };
 
-const getVerboseStatName = (stat: string | null): string => {
+const getVerboseStatName = (stat: string | null | undefined): string => {
   if (!stat) return "";
   return STAT_NAME_MAP[stat] || stat;
 };
