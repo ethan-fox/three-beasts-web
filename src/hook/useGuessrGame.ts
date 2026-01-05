@@ -4,7 +4,7 @@ import { useGetPuzzles } from "./useGetPuzzles";
 import { useGetSummary } from "./useGetSummary";
 import { useSubmitGuesses } from "./useSubmitGuesses";
 import { formatDateForApi, getCurrentEasternDate } from "@/util/dateUtil";
-import { loadPuzzleCompletion, savePuzzleCompletion, type PuzzleCompletion } from "@/util/storageUtil";
+import { loadPuzzleCompletion, savePuzzleCompletion, STORAGE_VERSION, type PuzzleCompletion } from "@/util/storageUtil";
 import type { GuessSubmission } from "@/model/api/GuessSubmission";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 
@@ -67,7 +67,7 @@ export const useGuessrGame = () => {
       guesses: Object.fromEntries(validGuesses),
       results,
       completedAt: new Date().toISOString(),
-      version: 1,
+      version: STORAGE_VERSION,
     });
   }, [selectedDate, guesses, puzzles]);
 

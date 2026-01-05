@@ -1,7 +1,7 @@
-import type { PuzzleView } from "@/model/view/PuzzleView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
 export interface PuzzleCardProps {
-  puzzle: PuzzleView;
+  puzzle: GuessrPuzzleView;
   puzzleNumber: number;
   yearGuess: number | null;
   onYearChange: (year: number | null) => void;

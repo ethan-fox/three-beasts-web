@@ -1,24 +1,35 @@
-import { threeBeastsBackend } from "./ThreeBeastsBackend";
-import type { GuessrListView } from "@/model/view/GuessrListView";
+import { threeBeastsBackend } from "@/client/ThreeBeastsBackend";
+import type { GuessrItemView } from "@/model/view/GuessrItemView";
+import type { GuessrDetailView } from "@/model/view/GuessrDetailView";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 import type { GuessSubmission } from "@/model/api/GuessSubmission";
 import type { HowToPlayView } from "@/model/view/HowToPlayView";
-import type { GuessrSummaryView } from "@/model/view/GuessrSummaryView";
 
 class GuessrClient {
-  async fetchPuzzles(date: string): Promise<GuessrListView> {
-    const response = await threeBeastsBackend.get<GuessrListView>(`/guessr/`, {
-      params: { date },
+  async listGuessrs(date?: string, variant?: string): Promise<GuessrItemView[]> {
+    const params: Record<string, string> = {};
+    if (date) params.date = date;
+    if (variant) params.variant = variant;
+
+    const response = await threeBeastsBackend.get<GuessrItemView[]>(`/v1/guessr`, {
+      params,
     });
     return response.data;
   }
 
-  async submitGuesses(
+  async getGuessr(guessrId: number): Promise<GuessrDetailView> {
+    const response = await threeBeastsBackend.get<GuessrDetailView>(
+      `/v1/guessr/${guessrId}`
+    );
+    return response.data;
+  }
+
+  async validateGuesses(
     guessrId: number,
     submission: GuessSubmission
   ): Promise<BatchGuessValidationView> {
     const response = await threeBeastsBackend.post<BatchGuessValidationView>(
-      `/guessr/${guessrId}`,
+      `/v1/guessr/${guessrId}`,
       submission
     );
     return response.data;
@@ -26,11 +37,6 @@ class GuessrClient {
 
   async fetchHowToPlay(): Promise<HowToPlayView> {
     const response = await threeBeastsBackend.get<HowToPlayView>(`/guessr/how-to-play`);
-    return response.data;
-  }
-
-  async fetchSummary(): Promise<GuessrSummaryView[]> {
-    const response = await threeBeastsBackend.get<GuessrSummaryView[]>(`/guessr/summary`);
     return response.data;
   }
 }

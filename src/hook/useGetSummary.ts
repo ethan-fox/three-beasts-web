@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { guessrClient } from "@/client/GuessrClient";
-import type { GuessrSummaryView } from "@/model/view/GuessrSummaryView";
+import type { GuessrItemView } from "@/model/view/GuessrItemView";
 
 export const useGetSummary = () => {
-  const [summary, setSummary] = useState<GuessrSummaryView[] | null>(null);
+  const [summary, setSummary] = useState<GuessrItemView[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,7 +13,7 @@ export const useGetSummary = () => {
       setError(null);
 
       try {
-        const data = await guessrClient.fetchSummary();
+        const data = await guessrClient.listGuessrs();
         setSummary(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load puzzle summary");

@@ -7,12 +7,12 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import type { PuzzleView } from "@/model/view/PuzzleView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 import PuzzleCard from "@/components/domain/PuzzleCard/PuzzleCard";
 import CarouselHints from "@/components/custom/CarouselHints";
 
 interface MobilePuzzleDisplayProps {
-  puzzles: PuzzleView[];
+  puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
   onGuessChange: (puzzleId: number, year: number | null) => void;
 }

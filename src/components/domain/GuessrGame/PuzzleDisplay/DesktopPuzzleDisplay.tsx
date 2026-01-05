@@ -1,8 +1,8 @@
-import type { PuzzleView } from "@/model/view/PuzzleView";
-import PuzzleCard from "../../PuzzleCard/PuzzleCard";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
+import PuzzleCard from "@/components/domain/PuzzleCard/PuzzleCard";
 
 interface DesktopPuzzleDisplayProps {
-  puzzles: PuzzleView[];
+  puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
   onGuessChange: (puzzleId: number, year: number | null) => void;
 }

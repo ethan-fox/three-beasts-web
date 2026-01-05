@@ -1,7 +1,7 @@
-import type { GuessrSummaryView } from "@/model/view/GuessrSummaryView";
+import type { GuessrItemView } from "@/model/view/GuessrItemView";
 
 export interface DateSelectorProps {
   value: Date;
   onChange: (date: Date) => void;
-  summary: GuessrSummaryView[] | null;
+  summary: GuessrItemView[] | null;
 }

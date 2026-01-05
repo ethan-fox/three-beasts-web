@@ -8,7 +8,7 @@ export interface PuzzleCompletion {
   version: number;
 }
 
-const STORAGE_VERSION = 1;
+export const STORAGE_VERSION = 2;
 
 export const getPuzzleStorageKey = (date: string): string => {
   return `puzzle-${date}`;

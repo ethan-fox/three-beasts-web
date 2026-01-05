@@ -1,9 +1,9 @@
-import type { PuzzleView } from "@/model/view/PuzzleView";
-import MobilePuzzleDisplay from "./MobilePuzzleDisplay/MobilePuzzleDisplay";
-import DesktopPuzzleDisplay from "./DesktopPuzzleDisplay";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
+import MobilePuzzleDisplay from "@/components/domain/GuessrGame/PuzzleDisplay/MobilePuzzleDisplay/MobilePuzzleDisplay";
+import DesktopPuzzleDisplay from "@/components/domain/GuessrGame/PuzzleDisplay/DesktopPuzzleDisplay";
 
 interface PuzzleDisplayProps {
-  puzzles: PuzzleView[];
+  puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
   onGuessChange: (puzzleId: number, year: number | null) => void;
 }

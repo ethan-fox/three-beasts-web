@@ -17,7 +17,7 @@ export const useSubmitGuesses = (options?: UseSubmitGuessesOptions) => {
     setError(null);
 
     try {
-      const validationResults = await guessrClient.submitGuesses(guessrId, submission);
+      const validationResults = await guessrClient.validateGuesses(guessrId, submission);
       setResults(validationResults);
 
       if (options?.onCompletionSaved) {
