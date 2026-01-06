@@ -13,11 +13,11 @@ const ResultGauge = ({ score }: ResultGaugeProps) => {
         arc={{
           padding: 0.02,
           subArcs: [
-            { limit: 29, color: "#b8b6ba" },  // 0-29: Gray 
-            { limit: 49, color: "#ef4444" },  // 30-49: Red
-            { limit: 69, color: "#f97316" },  // 50-69: Orange
-            { limit: 84, color: "#eab308" },  // 70-84: Yellow
-            { limit: 99, color: "#22c55e" },  // 85-99: Green
+            { limit: 24, color: "#b8b6ba" },  // 0-24: Gray 
+            { limit: 49, color: "#ef4444" },  // 25-49: Red
+            { limit: 74, color: "#f97316" },  // 50-74: Orange
+            { limit: 89, color: "#eab308" },  // 75-89: Yellow
+            { limit: 99, color: "#22c55e" },  // 90-99: Green
             { color: "#3b82f6" },             // 100: Blue (perfect)
           ],
         }}

@@ -1,5 +1,4 @@
 import type { ContentItemView } from "@/model/view/ContentItemView";
-import { formatValue } from "@/util/statFormatter";
 
 interface ContentTableProps {
   content: ContentItemView[];
@@ -18,7 +17,7 @@ const ContentTable = ({ content }: ContentTableProps) => {
           </span>
           {item.value !== null && (
             <span className="font-bold text-foreground">
-              {formatValue(item.value)}
+              {item.value}
             </span>
           )}
         </div>

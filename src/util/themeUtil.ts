@@ -7,8 +7,9 @@ export const getThemeEmoji = (theme: Theme): string => {
     case "FOOTBALL":
       return "🏈";
     case "BASKETBALL":
-    case "NCAA BASKETBALL":
       return "🏀";
+    case "NCAA_BASKETBALL":
+      return "🎓🏀";
     default:
       return "";
   }

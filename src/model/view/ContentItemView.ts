@@ -1,5 +1,5 @@
 export interface ContentItemView {
   name: string;
-  value: number | null;
+  value: string | null;
   tags: string[];
 }
