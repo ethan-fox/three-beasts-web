@@ -5,6 +5,7 @@ import PuzzleDisplay from "./PuzzleDisplay/PuzzleDisplay";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Kbd } from "@/components/ui/kbd";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { areAllPuzzlesComplete } from "@/util/puzzleUtil";
 import ResultsContent from "../ResultsContent/ResultsContent";
 import HowToPlay from "../HowToPlay/HowToPlay";
@@ -58,7 +59,8 @@ const GuessrGame = () => {
           onChange={setSelectedDate}
           summary={summary}
         />
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 right-0 flex items-center gap-1">
+          <ThemeToggle />
           <HowToPlay />
         </div>
       </div>
