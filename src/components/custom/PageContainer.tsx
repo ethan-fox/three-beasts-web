@@ -9,7 +9,7 @@ const PageContainer = ({ children, className }: PageContainerProps) => {
   return (
     <div
       className={cn(
-        "max-w-[clamp(56rem,80vw,90rem)] mx-auto md:py-8 md:px-4",
+        "max-w-[clamp(56rem,80vw,90rem)] mx-auto px-[5%] md:py-8 md:px-4",
         className
       )}
     >

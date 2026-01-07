@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { formatDateForApi } from "@/util/dateUtil";
 import {
   loadPuzzleCompletion,
   savePuzzleCompletion,
@@ -8,25 +7,29 @@ import {
 } from "@/util/storageUtil";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 
-export const usePuzzleCompletion = (selectedDate: Date) => {
+export const usePuzzleCompletion = (puzzleId: number | null) => {
   const [completedPuzzle, setCompletedPuzzle] = useState<PuzzleCompletion | null>(null);
 
   useEffect(() => {
-    const dateStr = formatDateForApi(selectedDate);
-    const completion = loadPuzzleCompletion(dateStr);
+    if (puzzleId === null) {
+      setCompletedPuzzle(null);
+      return;
+    }
+    const completion = loadPuzzleCompletion(puzzleId);
     setCompletedPuzzle(completion || null);
-  }, [selectedDate]);
+  }, [puzzleId]);
 
   const saveCompletion = useCallback(
-    (puzzleId: number, guesses: Map<number, number | null>, results: BatchGuessValidationView) => {
-      const dateStr = formatDateForApi(selectedDate);
+    (guesses: Map<number, number | null>, results: BatchGuessValidationView) => {
+      if (puzzleId === null) return;
+
       const validGuesses = new Map(
         Array.from(guesses.entries())
           .filter(([, guess]) => guess !== null)
           .map(([id, guess]) => [id, guess as number])
       );
 
-      savePuzzleCompletion(dateStr, puzzleId, validGuesses, results);
+      savePuzzleCompletion(puzzleId, validGuesses, results);
 
       setCompletedPuzzle({
         puzzleId,
@@ -36,7 +39,7 @@ export const usePuzzleCompletion = (selectedDate: Date) => {
         version: STORAGE_VERSION,
       });
     },
-    [selectedDate]
+    [puzzleId]
   );
 
   const clearCompletion = useCallback(() => {

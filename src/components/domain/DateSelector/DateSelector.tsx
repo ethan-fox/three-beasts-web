@@ -12,18 +12,18 @@ interface DateSelectorProps {
   value: Date;
   onChange: (date: Date) => void;
   summary: GuessrItemView[] | null;
+  variant: string;
 }
 
-const DateSelector = ({ value, onChange, summary }: DateSelectorProps) => {
+const DateSelector = ({ value, onChange, summary, variant }: DateSelectorProps) => {
   const today = getCurrentEasternDate();
 
-  // Convert summary to dates array
-  const availableDates: Date[] = summary
-    ? summary.map((item) => {
-        const [year, month, day] = item.date.split("-").map(Number);
-        return new Date(year, month - 1, day);
-      })
-    : [];
+  // Filter summary by variant, then convert to dates array
+  const filteredSummary = summary?.filter((item) => item.variant === variant) || [];
+  const availableDates: Date[] = filteredSummary.map((item) => {
+    const [year, month, day] = item.date.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  });
 
   const handleChange = (indexString: string) => {
     const selectedIndex = parseInt(indexString, 10);
@@ -34,10 +34,10 @@ const DateSelector = ({ value, onChange, summary }: DateSelectorProps) => {
     (date) => date.toDateString() === value.toDateString()
   );
 
-  const formatDisplayText = (date: Date, puzzleId?: number) => {
+  const formatDisplayText = (date: Date, day_number?: number | null) => {
     const isToday = date.toDateString() === today.toDateString();
     const dateText = isToday ? "Today's Puzzles" : formatDateForDisplay(date);
-    return puzzleId ? `#${puzzleId} - ${dateText}` : dateText;
+    return day_number ? `#${day_number} - ${dateText}` : dateText;
   };
 
   // Loading state
@@ -49,20 +49,29 @@ const DateSelector = ({ value, onChange, summary }: DateSelectorProps) => {
     );
   }
 
+  // No puzzles for this variant
+  if (availableDates.length === 0) {
+    return (
+      <div className="w-auto p-2 border rounded-md bg-card text-foreground text-center">
+        No puzzles available
+      </div>
+    );
+  }
+
   return (
-    <Select value={currentIndex.toString()} onValueChange={handleChange}>
-      <SelectTrigger className="w-auto cursor-pointer">
+    <Select value={currentIndex >= 0 ? currentIndex.toString() : "0"} onValueChange={handleChange}>
+      <SelectTrigger className="w-auto cursor-pointer transition-all hover:bg-accent hover:text-accent-foreground">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         {availableDates.map((date, index) => {
           const dateString = formatDateForApi(date);
-          const summaryItem = summary.find((item) => item.date === dateString);
-          const puzzleId = summaryItem?.id;
-          const displayText = formatDisplayText(date, puzzleId);
+          const summaryItem = filteredSummary.find((item) => item.date === dateString);
+          const day_number = summaryItem?.day_number;
+          const displayText = formatDisplayText(date, day_number);
 
           return (
-            <SelectItem key={index} value={index.toString()}>
+            <SelectItem key={index} value={index.toString()} className="cursor-pointer">
               {displayText}
             </SelectItem>
           );

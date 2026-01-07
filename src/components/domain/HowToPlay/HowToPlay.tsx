@@ -8,16 +8,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { guessrClient } from "@/client/GuessrClient";
 import type { HowToPlayView } from "@/model/view/HowToPlayView";
 
-const HowToPlay = () => {
+interface HowToPlayProps {
+  trigger?: (props: { onClick: () => void }) => React.ReactNode;
+}
+
+const HowToPlay = ({ trigger }: HowToPlayProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [howToPlay, setHowToPlay] = useState<HowToPlayView | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,24 +36,19 @@ const HowToPlay = () => {
     }
   }, [isOpen, howToPlay]);
 
+  const defaultTrigger = (
+    <button
+      onClick={() => setIsOpen(true)}
+      className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+      aria-label="How to play"
+    >
+      <CircleHelp className="w-6 h-6" />
+    </button>
+  );
+
   return (
     <>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => setIsOpen(true)}
-              className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              aria-label="How to play"
-            >
-              <CircleHelp className="w-6 h-6" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>How to play</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {trigger ? trigger({ onClick: () => setIsOpen(true) }) : defaultTrigger}
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-h-[90vh] max-w-[90vw] md:max-w-2xl flex flex-col p-0">

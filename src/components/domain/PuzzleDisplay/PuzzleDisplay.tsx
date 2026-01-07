@@ -6,6 +6,7 @@ interface PuzzleDisplayProps {
   puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
   onGuessChange: (puzzleId: number, year: number | null) => void;
+  variant: string;
 }
 
 const PuzzleDisplay = (props: PuzzleDisplayProps) => {

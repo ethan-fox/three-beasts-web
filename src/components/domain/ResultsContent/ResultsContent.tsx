@@ -9,6 +9,7 @@ interface ResultsContentProps {
   puzzleId: number;
   results: BatchGuessValidationView;
   guesses: Map<number, number | null>;
+  variant: string;
   showGauge?: boolean;
   className?: string;
 }
@@ -17,6 +18,7 @@ const ResultsContent = ({
   puzzleId,
   results,
   guesses,
+  variant,
   className,
 }: ResultsContentProps) => {
   return (
@@ -32,10 +34,10 @@ const ResultsContent = ({
 
       {/* Results Display Section */}
       <div className="touch:block desktop:hidden">
-        <MobileResultsDisplay results={results.results} guesses={guesses} />
+        <MobileResultsDisplay results={results.results} guesses={guesses} variant={variant} />
       </div>
       <div className="touch:hidden desktop:block">
-        <DesktopResultsDisplay results={results.results} guesses={guesses} />
+        <DesktopResultsDisplay results={results.results} guesses={guesses} variant={variant} />
       </div>
     </div>
   );

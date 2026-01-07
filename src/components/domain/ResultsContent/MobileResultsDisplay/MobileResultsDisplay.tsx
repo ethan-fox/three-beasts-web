@@ -14,11 +14,17 @@ import type { PuzzleResultView } from "@/model/view/PuzzleResultView";
 interface MobileResultsDisplayProps {
   results: PuzzleResultView[];
   guesses: Map<number, number | null>;
+  variant: string;
 }
 
-const MobileResultsDisplay = ({ results, guesses }: MobileResultsDisplayProps) => {
+const MobileResultsDisplay = ({ results, guesses, variant }: MobileResultsDisplayProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+
+  // Reset carousel position when variant changes
+  useEffect(() => {
+    setCurrent(0);
+  }, [variant]);
 
   useEffect(() => {
     if (!api) {
@@ -46,7 +52,7 @@ const MobileResultsDisplay = ({ results, guesses }: MobileResultsDisplayProps) =
         api={api}
       />
 
-      <Carousel setApi={setApi} className="w-full max-w-xs mx-auto">
+      <Carousel key={variant} setApi={setApi} className="w-full max-w-xs mx-auto touch-pan-y">
         <CarouselContent>
           {results.map((result, index) => {
             const userGuess = guesses.get(result.id);
@@ -57,6 +63,7 @@ const MobileResultsDisplay = ({ results, guesses }: MobileResultsDisplayProps) =
                   result={result}
                   puzzleNumber={index + 1}
                   userGuess={userGuess}
+                  variant={variant}
                 />
               </CarouselItem>
             );

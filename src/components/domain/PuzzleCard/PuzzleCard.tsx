@@ -3,18 +3,23 @@ import PuzzleHeader from "@/components/domain/PuzzleCard/PuzzleHeader/PuzzleHead
 import YearPicker from "@/components/domain/PuzzleCard/YearPicker/YearPicker";
 import ContentTable from "@/components/domain/PuzzleCard/ContentTable/ContentTable";
 import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
+import { getVariantCardClasses } from "@/util/variantUtil";
+import { cn } from "@/lib/utils";
 
 interface PuzzleCardProps {
   puzzle: GuessrPuzzleView;
   puzzleNumber: number;
   yearGuess: number | null;
   onYearChange: (year: number | null) => void;
+  variant: string;
   disabled?: boolean;
 }
 
-const PuzzleCard = ({ puzzle, puzzleNumber, yearGuess, onYearChange, disabled }: PuzzleCardProps) => {
+const PuzzleCard = ({ puzzle, puzzleNumber, yearGuess, onYearChange, variant, disabled }: PuzzleCardProps) => {
+  const cardClasses = getVariantCardClasses(variant);
+
   return (
-    <Card className="flex flex-col h-full">
+    <Card className={cn("flex flex-col h-full", cardClasses)}>
       <CardHeader>
         <PuzzleHeader hint={puzzle.hint} puzzleNumber={puzzleNumber} />
       </CardHeader>

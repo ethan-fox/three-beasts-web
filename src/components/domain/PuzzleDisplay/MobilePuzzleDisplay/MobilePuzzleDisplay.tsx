@@ -15,11 +15,17 @@ interface MobilePuzzleDisplayProps {
   puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
   onGuessChange: (puzzleId: number, year: number | null) => void;
+  variant: string;
 }
 
-const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange }: MobilePuzzleDisplayProps) => {
+const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange, variant }: MobilePuzzleDisplayProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+
+  // Reset carousel position when variant changes
+  useEffect(() => {
+    setCurrent(0);
+  }, [variant]);
 
   useEffect(() => {
     if (!api) {
@@ -47,7 +53,7 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange }: MobilePuzzleDi
         api={api}
       />
 
-      <Carousel setApi={setApi} className="w-full">
+      <Carousel key={variant} setApi={setApi} className="w-full touch-pan-y">
         <CarouselContent>
           {puzzles.map((puzzle, index) => (
             <CarouselItem key={puzzle.id}>
@@ -56,6 +62,7 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange }: MobilePuzzleDi
                 puzzleNumber={index + 1}
                 yearGuess={guesses.get(puzzle.id) ?? null}
                 onYearChange={(year) => onGuessChange(puzzle.id, year)}
+                variant={variant}
               />
             </CarouselItem>
           ))}

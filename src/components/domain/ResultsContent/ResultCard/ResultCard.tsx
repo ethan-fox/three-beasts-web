@@ -1,18 +1,22 @@
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { calculateAccuracy } from "@/util/resultUtil";
 import type { PuzzleResultView } from "@/model/view/PuzzleResultView";
+import { getVariantCardClasses } from "@/util/variantUtil";
+import { cn } from "@/lib/utils";
 
 interface ResultCardProps {
   result: PuzzleResultView;
   puzzleNumber: number;
   userGuess: number | null | undefined;
+  variant: string;
 }
 
-const ResultCard = ({ result, puzzleNumber, userGuess }: ResultCardProps) => {
+const ResultCard = ({ result, puzzleNumber, userGuess, variant }: ResultCardProps) => {
   const accuracy = calculateAccuracy(result.score);
+  const cardClasses = getVariantCardClasses(variant);
 
   return (
-    <Card>
+    <Card className={cn(cardClasses)}>
       <CardHeader>
         <CardTitle className="text-lg">Puzzle {puzzleNumber}</CardTitle>
       </CardHeader>
