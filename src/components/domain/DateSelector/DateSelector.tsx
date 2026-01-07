@@ -6,7 +6,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getCurrentEasternDate, formatDateForDisplay, formatDateForApi } from "@/util/dateUtil";
-import type { DateSelectorProps } from "@/model/component/DateSelectorProps";
+import type { GuessrItemView } from "@/model/view/GuessrItemView";
+
+interface DateSelectorProps {
+  value: Date;
+  onChange: (date: Date) => void;
+  summary: GuessrItemView[] | null;
+}
 
 const DateSelector = ({ value, onChange, summary }: DateSelectorProps) => {
   const today = getCurrentEasternDate();

@@ -1,14 +1,15 @@
-import GuessrGame from "@/components/domain/GuessrGame/GuessrGame";
+import "./App.css";
+import GamePage from "@/components/page/GamePage/GamePage";
 import { Separator } from "@/components/ui/separator";
 import { Footer } from "@/components/ui/footer";
 
 function App() {
   return (
-    <>
-      <GuessrGame />
+    <div className="min-h-screen bg-background">
+      <GamePage />
       <Separator />
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -1,9 +1,16 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import type { PuzzleCardProps } from "@/model/component/PuzzleCardProps";
 import PuzzleHeader from "@/components/domain/PuzzleCard/PuzzleHeader/PuzzleHeader";
 import YearPicker from "@/components/domain/PuzzleCard/YearPicker/YearPicker";
 import ContentTable from "@/components/domain/PuzzleCard/ContentTable/ContentTable";
-import { MIN_YEAR, MAX_YEAR } from "@/util/constant";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
+
+interface PuzzleCardProps {
+  puzzle: GuessrPuzzleView;
+  puzzleNumber: number;
+  yearGuess: number | null;
+  onYearChange: (year: number | null) => void;
+  disabled?: boolean;
+}
 
 const PuzzleCard = ({ puzzle, puzzleNumber, yearGuess, onYearChange, disabled }: PuzzleCardProps) => {
   return (
@@ -16,8 +23,6 @@ const PuzzleCard = ({ puzzle, puzzleNumber, yearGuess, onYearChange, disabled }:
         <YearPicker
           value={yearGuess}
           onChange={onYearChange}
-          minYear={MIN_YEAR}
-          maxYear={MAX_YEAR}
           disabled={disabled}
         />
 

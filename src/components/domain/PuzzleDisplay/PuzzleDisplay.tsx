@@ -1,6 +1,6 @@
 import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
-import MobilePuzzleDisplay from "@/components/domain/GuessrGame/PuzzleDisplay/MobilePuzzleDisplay/MobilePuzzleDisplay";
-import DesktopPuzzleDisplay from "@/components/domain/GuessrGame/PuzzleDisplay/DesktopPuzzleDisplay";
+import MobilePuzzleDisplay from "@/components/domain/PuzzleDisplay/MobilePuzzleDisplay/MobilePuzzleDisplay";
+import DesktopPuzzleDisplay from "@/components/domain/PuzzleDisplay/DesktopPuzzleDisplay";
 
 interface PuzzleDisplayProps {
   puzzles: GuessrPuzzleView[];
