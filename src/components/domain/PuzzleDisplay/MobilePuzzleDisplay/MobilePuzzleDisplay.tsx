@@ -31,7 +31,6 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange, variant }: Mobil
 
   // Reset carousel position when variant changes
   useEffect(() => {
-    setCurrent(0);
     api?.scrollTo(0);
   }, [variant, api]);
 

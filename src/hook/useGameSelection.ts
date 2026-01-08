@@ -34,7 +34,9 @@ export const useGameSelection = () => {
 
   // Use ref to store setSearchParams to avoid infinite loop
   const setSearchParamsRef = useRef(setSearchParams);
-  setSearchParamsRef.current = setSearchParams;
+  useEffect(() => {
+    setSearchParamsRef.current = setSearchParams;
+  }, [setSearchParams]);
 
   useEffect(() => {
     const today = getCurrentEasternDate();

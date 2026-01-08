@@ -25,7 +25,6 @@ const MobileResultsDisplay = ({ results, guesses, puzzles, variant }: MobileResu
 
   // Reset carousel position when results change
   useEffect(() => {
-    setCurrent(0);
     api?.scrollTo(0);
   }, [results, api]);
 

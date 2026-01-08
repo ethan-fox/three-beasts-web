@@ -14,7 +14,7 @@ export const parseMarkdownSections = (markdown: string): ParsedMarkdown => {
   const sections: MarkdownSection[] = [];
   const lines = markdown.split("\n");
 
-  let preambleLines: string[] = [];
+  const preambleLines: string[] = [];
   let currentTitle = "";
   let currentContent: string[] = [];
   let foundFirstSection = false;

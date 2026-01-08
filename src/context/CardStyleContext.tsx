@@ -64,6 +64,7 @@ export const CardStyleProvider = ({ children }: CardStyleProviderProps) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCardStyles = () => {
   const context = useContext(CardStyleContext);
   if (!context) {

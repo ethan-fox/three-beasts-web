@@ -28,7 +28,7 @@ const YearPicker = forwardRef<HTMLInputElement, YearPickerProps>(
         inputMode="numeric"
         value={value ?? ""}
         onChange={handleChange}
-        placeholder={"Answer here"}
+        placeholder={"Guess the Year"}
         disabled={disabled}
         className="transition-all duration-200 hover:border-primary hover:shadow-[0_0_0_1px] hover:shadow-primary focus:border-primary focus:shadow-[0_0_0_2px] focus:shadow-primary"
       />

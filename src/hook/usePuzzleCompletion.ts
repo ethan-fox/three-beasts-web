@@ -9,14 +9,15 @@ import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidation
 import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
 export const usePuzzleCompletion = (puzzleId: number | null) => {
-  const [completedPuzzle, setCompletedPuzzle] = useState<PuzzleCompletion | null>(null);
+  const [completedPuzzle, setCompletedPuzzle] = useState<PuzzleCompletion | null>(() => {
+    if (puzzleId === null) return null;
+    return loadPuzzleCompletion(puzzleId) || null;
+  });
 
   useEffect(() => {
-    if (puzzleId === null) {
-      setCompletedPuzzle(null);
-      return;
-    }
+    if (puzzleId === null) return;
     const completion = loadPuzzleCompletion(puzzleId);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading from external storage (localStorage)
     setCompletedPuzzle(completion || null);
   }, [puzzleId]);
 
