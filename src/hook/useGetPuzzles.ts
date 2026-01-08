@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { guessrClient } from "@/client/GuessrClient";
-import type { GuessrListView } from "@/model/view/GuessrListView";
+import type { GuessrDetailView } from "@/model/view/GuessrDetailView";
 
-export const useGetPuzzles = (date: string | null) => {
-  const [puzzles, setPuzzles] = useState<GuessrListView | null>(null);
+export const useGetPuzzles = (date: string | null, variant: string) => {
+  const [puzzles, setPuzzles] = useState<GuessrDetailView | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,14 +14,22 @@ export const useGetPuzzles = (date: string | null) => {
     setError(null);
 
     try {
-      const data = await guessrClient.fetchPuzzles(date);
+      const guessrList = await guessrClient.listGuessrs(date, variant);
+
+      if (guessrList.length === 0) {
+        setError("No puzzle found for this date and variant");
+        return;
+      }
+
+      const guessrId = guessrList[0].id;
+      const data = await guessrClient.getGuessr(guessrId);
       setPuzzles(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load puzzles");
     } finally {
       setIsLoading(false);
     }
-  }, [date]);
+  }, [date, variant]);
 
   useEffect(() => {
     fetchPuzzles();

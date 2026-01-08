@@ -10,15 +10,23 @@ import {
 import ResultCard from "@/components/domain/ResultsContent/ResultCard/ResultCard";
 import CarouselHints from "@/components/custom/CarouselHints";
 import type { PuzzleResultView } from "@/model/view/PuzzleResultView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
 interface MobileResultsDisplayProps {
   results: PuzzleResultView[];
   guesses: Map<number, number | null>;
+  puzzles: GuessrPuzzleView[];
+  variant: string;
 }
 
-const MobileResultsDisplay = ({ results, guesses }: MobileResultsDisplayProps) => {
+const MobileResultsDisplay = ({ results, guesses, puzzles, variant }: MobileResultsDisplayProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+
+  // Reset carousel position when results change
+  useEffect(() => {
+    api?.scrollTo(0);
+  }, [results, api]);
 
   useEffect(() => {
     if (!api) {
@@ -46,17 +54,20 @@ const MobileResultsDisplay = ({ results, guesses }: MobileResultsDisplayProps) =
         api={api}
       />
 
-      <Carousel setApi={setApi} className="w-full max-w-xs mx-auto">
+      <Carousel setApi={setApi} className="w-full max-w-xs mx-auto touch-pan-y">
         <CarouselContent>
           {results.map((result, index) => {
             const userGuess = guesses.get(result.id);
+            const puzzle = puzzles.find(p => p.id === result.id);
 
             return (
-              <CarouselItem key={result.id}>
+              <CarouselItem key={result.id} className="py-4 pr-4 pl-6">
                 <ResultCard
                   result={result}
                   puzzleNumber={index + 1}
                   userGuess={userGuess}
+                  puzzle={puzzle}
+                  variant={variant}
                 />
               </CarouselItem>
             );

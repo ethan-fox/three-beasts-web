@@ -1,16 +1,20 @@
-import type { PuzzleHints, PuzzleType } from "@/model/view/PuzzleView";
-import { generateHintText } from "@/util/puzzleUtil";
+import type { HintView } from "@/model/view/HintView";
+import { getThemeEmoji } from "@/util/themeUtil";
 
 interface PuzzleHeaderProps {
-  hints: PuzzleHints;
-  puzzleType: PuzzleType;
+  hint: HintView;
   puzzleNumber: number;
+  showEmoji?: boolean;
 }
 
-const PuzzleHeader = ({ hints, puzzleType, puzzleNumber }: PuzzleHeaderProps) => {
-  const hintText = generateHintText(hints, puzzleType);
+const PuzzleHeader = ({ hint, puzzleNumber, showEmoji = true }: PuzzleHeaderProps) => {
+  const emoji = showEmoji ? getThemeEmoji(hint.theme) : null;
 
-  return <h3 className="text-lg font-semibold">{puzzleNumber}. {hintText}</h3>;
+  return (
+    <h3 className="text-lg font-semibold">
+      {puzzleNumber}. {emoji && `${emoji} `}{hint.title}
+    </h3>
+  );
 };
 
 export default PuzzleHeader;

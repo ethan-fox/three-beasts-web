@@ -1,32 +1,41 @@
+import { forwardRef } from "react";
 import { Input } from "@/components/ui/input";
-import type { YearPickerProps } from "@/model/component/YearPickerProps";
 
-const YearPicker = ({ value, onChange, minYear, maxYear, disabled }: YearPickerProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
+interface YearPickerProps {
+  value: number | null;
+  onChange: (year: number | null) => void;
+  disabled?: boolean;
+}
 
-    if (text === "") {
-      onChange(null);
-      return;
-    }
+const YearPicker = forwardRef<HTMLInputElement, YearPickerProps>(
+  ({ value, onChange, disabled }, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const text = e.target.value;
 
-    const year = parseInt(text, 10);
-    onChange(isNaN(year) ? null : year);
-  };
+      if (text === "") {
+        onChange(null);
+        return;
+      }
 
-  return (
-    <Input
-      type="number"
-      inputMode="numeric"
-      min={minYear}
-      max={maxYear}
-      value={value ?? ""}
-      onChange={handleChange}
-      placeholder={`${minYear}-${maxYear}`}
-      disabled={disabled}
-      className="text-center transition-all duration-200 hover:border-primary hover:shadow-[0_0_0_1px] hover:shadow-primary focus:border-primary focus:shadow-[0_0_0_2px] focus:shadow-primary"
-    />
-  );
-};
+      const year = parseInt(text, 10);
+      onChange(isNaN(year) ? null : year);
+    };
+
+    return (
+      <Input
+        ref={ref}
+        type="number"
+        inputMode="numeric"
+        value={value ?? ""}
+        onChange={handleChange}
+        placeholder={"Guess the Year"}
+        disabled={disabled}
+        className="transition-all duration-200 hover:border-primary hover:shadow-[0_0_0_1px] hover:shadow-primary focus:border-primary focus:shadow-[0_0_0_2px] focus:shadow-primary"
+      />
+    );
+  }
+);
+
+YearPicker.displayName = "YearPicker";
 
 export default YearPicker;
