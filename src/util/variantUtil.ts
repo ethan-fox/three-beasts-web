@@ -18,8 +18,8 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     emoji: "🏆",
     subtext: "Test your whole array of knowledge!",
     color: {
-      gradient: "from-purple-500/20 via-card to-amber-500/20",
-      glow: "shadow-purple-500/25",
+      gradient: "from-amber-400/30 via-yellow-500/20 to-amber-600/30",
+      glow: "shadow-amber-500/40",
     },
   },
   baseball: {
@@ -54,8 +54,8 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     displayName: "NCAA Basketball",
     emoji: "🎓",
     color: {
-      gradient: "from-yellow-500/25 via-card to-yellow-400/15",
-      glow: "shadow-yellow-500/30",
+      gradient: "from-purple-500/25 via-card to-purple-400/15",
+      glow: "shadow-purple-500/30",
     },
   },
 };

@@ -4,7 +4,6 @@ import { Sparkle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getVariantConfig, type VariantConfig } from "@/util/variantUtil";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface RadialMenuProps {
   availableVariants: string[];
@@ -39,20 +38,20 @@ const RadialMenu = ({ availableVariants, currentVariant, onSelect }: RadialMenuP
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-4 right-4 z-50"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="h-6 w-6" />
-            </Button>
-
             <div
               className="relative"
               style={{ width: radius * 2 + 80, height: radius * 2 + 80 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Close button - positioned at top-right of the radial menu */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute -top-4 -right-4 z-50 h-12 w-12 rounded-full bg-card border-2 shadow-lg hover:bg-muted"
+                onClick={() => setIsOpen(false)}
+              >
+                <X className="h-7 w-7" />
+              </Button>
               {variants.map((variant, index) => {
                 const angleStep = (2 * Math.PI) / variants.length;
                 const angle = angleStep * index - Math.PI / 2;
@@ -64,42 +63,39 @@ const RadialMenu = ({ availableVariants, currentVariant, onSelect }: RadialMenuP
                 const centerY = radius + 40 - 32;
 
                 return (
-                  <Tooltip key={variant.key}>
-                    <TooltipTrigger asChild>
-                      <motion.button
-                        initial={{ opacity: 0, scale: 0, x: centerX, y: centerY }}
-                        animate={{
-                          opacity: 1,
-                          scale: 1,
-                          x: finalX,
-                          y: finalY,
-                          transition: { delay: (variants.length - 1 - index) * 0.02 },
-                        }}
-                        exit={{
-                          opacity: 0,
-                          scale: 0,
-                          x: centerX,
-                          y: centerY,
-                          transition: { delay: (variants.length - index) * 0.02 },
-                        }}
-                        whileHover={{ scale: 2.0 }}
-                        whileTap={{ scale: 1.5 }}
-                        transition={{ type: "tween", duration: 0.15 }}
-                        onClick={() => handleSelect(variant.key)}
-                        className={cn(
-                          "absolute flex items-center justify-center",
-                          "w-16 h-16 rounded-full",
-                          "bg-card border-2 cursor-pointer",
-                          variant.key === currentVariant
-                            ? "shadow-[0_0_20px_4px_var(--primary)]"
-                            : "shadow-lg"
-                        )}
-                      >
-                        <span className="text-3xl">{variant.emoji}</span>
-                      </motion.button>
-                    </TooltipTrigger>
-                    <TooltipContent>{variant.displayName}</TooltipContent>
-                  </Tooltip>
+                  <motion.button
+                    key={variant.key}
+                    initial={{ opacity: 0, scale: 0, x: centerX, y: centerY }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      x: finalX,
+                      y: finalY,
+                      transition: { delay: (variants.length - 1 - index) * 0.02 },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0,
+                      x: centerX,
+                      y: centerY,
+                      transition: { delay: (variants.length - index) * 0.02 },
+                    }}
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "tween", duration: 0.15 }}
+                    onClick={() => handleSelect(variant.key)}
+                    title={variant.displayName}
+                    className={cn(
+                      "absolute flex items-center justify-center",
+                      "w-16 h-16 rounded-full",
+                      "bg-card border-2 cursor-pointer",
+                      variant.key === currentVariant
+                        ? "shadow-[0_0_20px_4px_var(--primary)]"
+                        : "shadow-lg"
+                    )}
+                  >
+                    <span className="text-3xl">{variant.emoji}</span>
+                  </motion.button>
                 );
               })}
             </div>

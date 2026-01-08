@@ -40,7 +40,7 @@ const GamePage = () => {
 
     const validationResults = await submitGuesses(puzzles.id, { guesses: guessArray });
     if (validationResults) {
-      saveCompletion(guesses, validationResults);
+      saveCompletion(guesses, validationResults, puzzles.puzzles);
     }
   }, [puzzles, guesses, submitGuesses, saveCompletion]);
 
@@ -50,15 +50,17 @@ const GamePage = () => {
 
   return (
     <>
-      <GameBanner />
-      <NavigationTray
-        className="desktop:rounded-b-sm"
-        selectedDate={selectedDate}
-        onDateChange={setSelectedDate}
-        selectedVariant={selectedVariant}
-        onVariantChange={selectVariant}
-        summary={summary}
-      />
+      <div className="sticky top-0 z-50 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+        <GameBanner />
+        <NavigationTray
+          className="desktop:rounded-b-sm"
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+          selectedVariant={selectedVariant}
+          onVariantChange={selectVariant}
+          summary={summary}
+        />
+      </div>
       <PageContainer className="pt-[clamp(1.5rem,4vh,3rem)]">
         {error && (
           <div className="text-center py-8 text-red-600">Error: {error}</div>
@@ -72,10 +74,12 @@ const GamePage = () => {
         )}
 
         {showResults && (
-          <Card className="mt-8">
+          <Card className="mt-8 bg-transparent border-none shadow-none">
             <ResultsContent
-              puzzleId={puzzles!.id}
+              dayNumber={puzzles!.day_number ?? 0}
               results={completedPuzzle?.results || results!}
+              puzzles={completedPuzzle?.puzzles || puzzles!.puzzles}
+              variant={selectedVariant}
               guesses={
                 completedPuzzle
                   ? new Map(
@@ -86,7 +90,6 @@ const GamePage = () => {
                     )
                   : guesses
               }
-              variant={selectedVariant}
             />
           </Card>
         )}

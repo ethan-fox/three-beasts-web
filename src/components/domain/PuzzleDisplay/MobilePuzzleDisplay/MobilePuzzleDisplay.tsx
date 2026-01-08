@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -21,11 +21,19 @@ interface MobilePuzzleDisplayProps {
 const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange, variant }: MobilePuzzleDisplayProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const focusCurrentInput = useCallback((index: number) => {
+    setTimeout(() => {
+      inputRefs.current[index]?.focus();
+    }, 100);
+  }, []);
 
   // Reset carousel position when variant changes
   useEffect(() => {
     setCurrent(0);
-  }, [variant]);
+    api?.scrollTo(0);
+  }, [variant, api]);
 
   useEffect(() => {
     if (!api) {
@@ -33,7 +41,9 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange, variant }: Mobil
     }
 
     const onSelect = () => {
-      setCurrent(api.selectedScrollSnap());
+      const newIndex = api.selectedScrollSnap();
+      setCurrent(newIndex);
+      focusCurrentInput(newIndex);
     };
 
     onSelect();
@@ -42,7 +52,7 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange, variant }: Mobil
     return () => {
       api.off("select", onSelect);
     };
-  }, [api]);
+  }, [api, focusCurrentInput]);
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -53,11 +63,12 @@ const MobilePuzzleDisplay = ({ puzzles, guesses, onGuessChange, variant }: Mobil
         api={api}
       />
 
-      <Carousel key={variant} setApi={setApi} className="w-full touch-pan-y">
+      <Carousel setApi={setApi} className="w-full touch-pan-y">
         <CarouselContent>
           {puzzles.map((puzzle, index) => (
-            <CarouselItem key={puzzle.id}>
+            <CarouselItem key={puzzle.id} className="py-4 pr-4 pl-8">
               <PuzzleCard
+                ref={(el) => { inputRefs.current[index] = el; }}
                 puzzle={puzzle}
                 puzzleNumber={index + 1}
                 yearGuess={guesses.get(puzzle.id) ?? null}

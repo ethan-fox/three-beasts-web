@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { CircleHelp } from "lucide-react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -8,8 +8,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { guessrClient } from "@/client/GuessrClient";
+import { parseMarkdownSections, createMarkdownComponents } from "@/util/markdownUtil";
 import type { HowToPlayView } from "@/model/view/HowToPlayView";
+
+const markdownComponents = createMarkdownComponents("base");
 
 interface HowToPlayProps {
   trigger?: (props: { onClick: () => void }) => React.ReactNode;
@@ -36,6 +45,11 @@ const HowToPlay = ({ trigger }: HowToPlayProps) => {
     }
   }, [isOpen, howToPlay]);
 
+  const parsedContent = useMemo(() => {
+    if (!howToPlay?.content) return { preamble: "", sections: [] };
+    return parseMarkdownSections(howToPlay.content);
+  }, [howToPlay]);
+
   const defaultTrigger = (
     <button
       onClick={() => setIsOpen(true)}
@@ -59,42 +73,36 @@ const HowToPlay = ({ trigger }: HowToPlayProps) => {
           </div>
           <div className="overflow-y-auto px-6 py-6">
             {error && <p className="text-destructive">{error}</p>}
-            {howToPlay && (
-              <div className="space-y-4">
+
+            {parsedContent.preamble && (
+              <div className="mb-4">
                 <Markdown
                   remarkPlugins={[remarkGfm]}
-                  components={{
-                    h1: () => null,
-                    h2: ({ children }) => (
-                      <h2 className="text-xl font-bold mb-3">{children}</h2>
-                    ),
-                    p: ({ children }) => (
-                      <p className="text-base mb-4">{children}</p>
-                    ),
-                    strong: ({ children }) => (
-                      <strong className="font-bold">{children}</strong>
-                    ),
-                    em: ({ children }) => (
-                      <em className="italic">{children}</em>
-                    ),
-                    ol: ({ children }) => (
-                      <ol className="list-decimal list-inside space-y-2 mb-4 ml-4">
-                        {children}
-                      </ol>
-                    ),
-                    ul: ({ children }) => (
-                      <ul className="list-disc list-inside space-y-2 mb-4 ml-4">
-                        {children}
-                      </ul>
-                    ),
-                    li: ({ children }) => (
-                      <li className="text-base">{children}</li>
-                    ),
-                  }}
+                  components={markdownComponents}
                 >
-                  {howToPlay.content}
+                  {parsedContent.preamble}
                 </Markdown>
               </div>
+            )}
+
+            {parsedContent.sections.length > 0 && (
+              <Accordion type="single" collapsible defaultValue="section-0">
+                {parsedContent.sections.map((section, index) => (
+                  <AccordionItem key={index} value={`section-${index}`}>
+                    <AccordionTrigger className="text-lg font-semibold">
+                      {section.title}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <Markdown
+                        remarkPlugins={[remarkGfm]}
+                        components={markdownComponents}
+                      >
+                        {section.content}
+                      </Markdown>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             )}
           </div>
         </DialogContent>

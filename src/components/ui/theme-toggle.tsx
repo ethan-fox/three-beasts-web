@@ -15,17 +15,20 @@ const ThemeToggle = () => {
             checked={isDark}
             onCheckedChange={toggleTheme}
             aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+            size="lg"
             thumbIcon={
               isDark ? (
-                <Moon className="h-3 w-3 text-primary" />
+                <Moon className="h-4 w-4 text-primary" />
               ) : (
-                <Sun className="h-3 w-3 text-amber-500" />
+                <Sun className="h-4 w-4 text-amber-500" />
               )
             }
           />
         </span>
       </TooltipTrigger>
-      <TooltipContent side="bottom">Change theme</TooltipContent>
+      <TooltipContent side="bottom" className="touch:hidden desktop:block">
+        Change theme
+      </TooltipContent>
     </Tooltip>
   );
 };

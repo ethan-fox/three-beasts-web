@@ -56,7 +56,7 @@ const GameBanner = () => {
   });
 
   return (
-    <div className="sticky top-0 z-50 bg-primary py-[clamp(1.5rem,4vh,3rem)] shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+    <div className="bg-primary py-[clamp(1.5rem,4vh,3rem)]">
       <div className="flex items-center justify-center gap-4 max-w-[clamp(20rem,90vw,48rem)] mx-auto">
         <motion.img
           src="/favicon-192.png"

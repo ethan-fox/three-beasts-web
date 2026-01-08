@@ -8,7 +8,7 @@ const Footer = ({ className }: FooterProps) => {
   return (
     <footer className={cn("py-8 text-center text-sm text-muted-foreground", className)}>
       <p className="mb-2">
-        All data is sourced from the{" "}
+        Baseball data is sourced from the{" "}
         <a
           href="https://sabr.org/lahman-database"
           target="_blank"
@@ -28,6 +28,18 @@ const Footer = ({ className }: FooterProps) => {
         </a>
         .
       </p>
+      <p className="mb-2">
+        Football, basketball, and NCAA basketball data is sourced from{" "}
+        <a
+          href="https://www.sports-reference.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-foreground underline hover:text-primary transition-colors"
+        >
+          Sports Reference LLC
+        </a>
+        .
+      </p>
       <p>
         This website is an{" "}
         <a
@@ -38,7 +50,7 @@ const Footer = ({ className }: FooterProps) => {
         >
           Ethan build
         </a>
-        . Copyright &copy; 2025 Ethan Fox LLC. The website and its code are proprietary, but all baseball data remains under CC BY-SA 3.0.
+        . Copyright &copy; 2025 Ethan Fox LLC. All rights reserved.
       </p>
     </footer>
   );

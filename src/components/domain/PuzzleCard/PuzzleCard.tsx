@@ -1,9 +1,10 @@
+import { forwardRef } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import PuzzleHeader from "@/components/domain/PuzzleCard/PuzzleHeader/PuzzleHeader";
 import YearPicker from "@/components/domain/PuzzleCard/YearPicker/YearPicker";
 import ContentTable from "@/components/domain/PuzzleCard/ContentTable/ContentTable";
 import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
-import { getVariantCardClasses } from "@/util/variantUtil";
+import { getVariantConfig } from "@/util/variantUtil";
 import { cn } from "@/lib/utils";
 
 interface PuzzleCardProps {
@@ -15,26 +16,38 @@ interface PuzzleCardProps {
   disabled?: boolean;
 }
 
-const PuzzleCard = ({ puzzle, puzzleNumber, yearGuess, onYearChange, variant, disabled }: PuzzleCardProps) => {
-  const cardClasses = getVariantCardClasses(variant);
+const PuzzleCard = forwardRef<HTMLInputElement, PuzzleCardProps>(
+  ({ puzzle, puzzleNumber, yearGuess, onYearChange, variant, disabled }, ref) => {
+    const config = getVariantConfig(variant);
 
-  return (
-    <Card className={cn("flex flex-col h-full", cardClasses)}>
-      <CardHeader>
-        <PuzzleHeader hint={puzzle.hint} puzzleNumber={puzzleNumber} />
-      </CardHeader>
+    const isChampionship = variant === "default";
 
-      <CardContent className="flex-1 flex flex-col gap-[clamp(1rem,2vw,2rem)]">
-        <YearPicker
-          value={yearGuess}
-          onChange={onYearChange}
-          disabled={disabled}
-        />
+    return (
+      <Card className={cn(
+        "flex flex-col h-full bg-gradient-to-br shadow-lg border rounded-xl",
+        config.color.gradient,
+        config.color.glow,
+        isChampionship && "border border-t-yellow-200/60 border-l-yellow-200/60 border-b-amber-600/40 border-r-amber-600/40 shadow-[0_0_20px_rgba(245,158,11,0.3),2px_2px_0px_rgba(120,80,20,0.25)]"
+      )}>
+        <CardHeader>
+          <PuzzleHeader hint={puzzle.hint} puzzleNumber={puzzleNumber} showEmoji={isChampionship} />
+        </CardHeader>
 
-        <ContentTable content={puzzle.content} />
-      </CardContent>
-    </Card>
-  );
-};
+        <CardContent className="flex-1 flex flex-col gap-[clamp(1rem,2vw,2rem)]">
+          <YearPicker
+            ref={ref}
+            value={yearGuess}
+            onChange={onYearChange}
+            disabled={disabled}
+          />
+
+          <ContentTable content={puzzle.content} />
+        </CardContent>
+      </Card>
+    );
+  }
+);
+
+PuzzleCard.displayName = "PuzzleCard";
 
 export default PuzzleCard;

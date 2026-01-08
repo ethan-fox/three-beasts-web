@@ -1,14 +1,16 @@
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
 export interface PuzzleCompletion {
   puzzleId: number;
   guesses: Record<number, number>;
   results: BatchGuessValidationView;
+  puzzles: GuessrPuzzleView[];
   completedAt: string;
   version: number;
 }
 
-export const STORAGE_VERSION = 3;
+export const STORAGE_VERSION = 4;
 
 export const getPuzzleStorageKey = (puzzleId: number): string => {
   return `puzzle-${puzzleId}`;
@@ -17,13 +19,15 @@ export const getPuzzleStorageKey = (puzzleId: number): string => {
 export const savePuzzleCompletion = (
   puzzleId: number,
   guesses: Map<number, number>,
-  results: BatchGuessValidationView
+  results: BatchGuessValidationView,
+  puzzles: GuessrPuzzleView[]
 ): void => {
   try {
     const completion: PuzzleCompletion = {
       puzzleId,
       guesses: Object.fromEntries(guesses),
       results,
+      puzzles,
       completedAt: new Date().toISOString(),
       version: STORAGE_VERSION,
     };
@@ -52,6 +56,7 @@ export const loadPuzzleCompletion = (puzzleId: number): PuzzleCompletion | null 
       !parsed.puzzleId ||
       !parsed.guesses ||
       !parsed.results ||
+      !parsed.puzzles ||
       !parsed.completedAt ||
       !parsed.version
     ) {

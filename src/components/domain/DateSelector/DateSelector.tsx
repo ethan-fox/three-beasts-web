@@ -43,7 +43,7 @@ const DateSelector = ({ value, onChange, summary, variant }: DateSelectorProps) 
   // Loading state
   if (!summary) {
     return (
-      <div className="w-auto p-2 border rounded-md bg-card text-foreground text-center">
+      <div className="w-auto h-9 px-4 py-2 border rounded-md text-sm bg-background shadow-xs dark:bg-input/30 dark:border-input text-center">
         Loading dates...
       </div>
     );
@@ -52,7 +52,7 @@ const DateSelector = ({ value, onChange, summary, variant }: DateSelectorProps) 
   // No puzzles for this variant
   if (availableDates.length === 0) {
     return (
-      <div className="w-auto p-2 border rounded-md bg-card text-foreground text-center">
+      <div className="w-auto h-9 px-4 py-2 border rounded-md text-sm bg-background shadow-xs dark:bg-input/30 dark:border-input text-center">
         No puzzles available
       </div>
     );
@@ -60,7 +60,7 @@ const DateSelector = ({ value, onChange, summary, variant }: DateSelectorProps) 
 
   return (
     <Select value={currentIndex >= 0 ? currentIndex.toString() : "0"} onValueChange={handleChange}>
-      <SelectTrigger className="w-auto cursor-pointer transition-all hover:bg-accent hover:text-accent-foreground">
+      <SelectTrigger className="w-auto cursor-pointer">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

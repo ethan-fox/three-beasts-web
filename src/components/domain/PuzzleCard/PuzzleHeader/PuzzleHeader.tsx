@@ -4,14 +4,15 @@ import { getThemeEmoji } from "@/util/themeUtil";
 interface PuzzleHeaderProps {
   hint: HintView;
   puzzleNumber: number;
+  showEmoji?: boolean;
 }
 
-const PuzzleHeader = ({ hint, puzzleNumber }: PuzzleHeaderProps) => {
-  const emoji = getThemeEmoji(hint.theme);
+const PuzzleHeader = ({ hint, puzzleNumber, showEmoji = true }: PuzzleHeaderProps) => {
+  const emoji = showEmoji ? getThemeEmoji(hint.theme) : null;
 
   return (
     <h3 className="text-lg font-semibold">
-      {puzzleNumber}. {emoji} {hint.title}
+      {puzzleNumber}. {emoji && `${emoji} `}{hint.title}
     </h3>
   );
 };

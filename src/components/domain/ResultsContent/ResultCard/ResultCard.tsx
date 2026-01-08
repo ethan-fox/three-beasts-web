@@ -1,39 +1,90 @@
+import { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import ContentTable from "@/components/domain/PuzzleCard/ContentTable/ContentTable";
 import { calculateAccuracy } from "@/util/resultUtil";
-import type { PuzzleResultView } from "@/model/view/PuzzleResultView";
-import { getVariantCardClasses } from "@/util/variantUtil";
+import { getVariantConfig } from "@/util/variantUtil";
 import { cn } from "@/lib/utils";
+import type { PuzzleResultView } from "@/model/view/PuzzleResultView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
 interface ResultCardProps {
   result: PuzzleResultView;
   puzzleNumber: number;
   userGuess: number | null | undefined;
+  puzzle?: GuessrPuzzleView;
   variant: string;
 }
 
-const ResultCard = ({ result, puzzleNumber, userGuess, variant }: ResultCardProps) => {
+const ResultCard = ({ result, puzzleNumber, userGuess, puzzle, variant }: ResultCardProps) => {
+  const [showPuzzle, setShowPuzzle] = useState(false);
   const accuracy = calculateAccuracy(result.score);
-  const cardClasses = getVariantCardClasses(variant);
+  const config = getVariantConfig(variant);
 
   return (
-    <Card className={cn(cardClasses)}>
+    <Card className={cn(
+      "bg-gradient-to-br border rounded-xl shadow-lg overflow-hidden relative",
+      config.color.gradient,
+      config.color.glow
+    )}>
+      {puzzle && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setShowPuzzle(!showPuzzle)}
+          className="absolute right-2 top-4 z-10 text-muted-foreground"
+          aria-label={showPuzzle ? "Back to results" : "View puzzle"}
+        >
+          <ChevronRight className={cn(
+            "w-6 h-6 transition-transform duration-300",
+            showPuzzle && "rotate-180"
+          )} />
+        </Button>
+      )}
+
       <CardHeader>
-        <CardTitle className="text-lg">Puzzle {puzzleNumber}</CardTitle>
+        <CardTitle className="text-lg text-center">Puzzle {puzzleNumber}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <div>
-          <p className="text-sm text-muted-foreground">Your Answer</p>
-          <p className="font-semibold">{userGuess ?? "No guess"}</p>
+
+      <div className="relative overflow-hidden h-40">
+        <div
+          className={cn(
+            "flex transition-transform duration-300 ease-in-out h-full",
+            showPuzzle && "-translate-x-1/2"
+          )}
+          style={{ width: "200%" }}
+        >
+          {/* Results Panel */}
+          <CardContent className="w-1/2 space-y-2">
+            <div>
+              <p className="text-sm text-muted-foreground">Your Answer</p>
+              <p className="font-semibold">{userGuess ?? "No guess"}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Correct Answer</p>
+              <p className="font-semibold">{result.correct_answer}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Accuracy</p>
+              <p className="font-semibold">{accuracy}%</p>
+            </div>
+          </CardContent>
+
+          {/* Puzzle Panel */}
+          <CardContent className="w-1/2 h-full overflow-y-auto text-left">
+            {puzzle ? (
+              <div className="space-y-3">
+                <p className="font-semibold">{puzzle.hint.title}</p>
+                <hr className="border-foreground/20" />
+                <ContentTable content={puzzle.content} />
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Puzzle data not available</p>
+            )}
+          </CardContent>
         </div>
-        <div>
-          <p className="text-sm text-muted-foreground">Correct Answer</p>
-          <p className="font-semibold">{result.correct_answer}</p>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground">Accuracy</p>
-          <p className="font-semibold">{accuracy}%</p>
-        </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };

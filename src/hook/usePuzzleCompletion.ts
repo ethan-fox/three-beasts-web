@@ -6,6 +6,7 @@ import {
   type PuzzleCompletion,
 } from "@/util/storageUtil";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
 export const usePuzzleCompletion = (puzzleId: number | null) => {
   const [completedPuzzle, setCompletedPuzzle] = useState<PuzzleCompletion | null>(null);
@@ -20,7 +21,7 @@ export const usePuzzleCompletion = (puzzleId: number | null) => {
   }, [puzzleId]);
 
   const saveCompletion = useCallback(
-    (guesses: Map<number, number | null>, results: BatchGuessValidationView) => {
+    (guesses: Map<number, number | null>, results: BatchGuessValidationView, puzzles: GuessrPuzzleView[]) => {
       if (puzzleId === null) return;
 
       const validGuesses = new Map(
@@ -29,12 +30,13 @@ export const usePuzzleCompletion = (puzzleId: number | null) => {
           .map(([id, guess]) => [id, guess as number])
       );
 
-      savePuzzleCompletion(puzzleId, validGuesses, results);
+      savePuzzleCompletion(puzzleId, validGuesses, results, puzzles);
 
       setCompletedPuzzle({
         puzzleId,
         guesses: Object.fromEntries(validGuesses),
         results,
+        puzzles,
         completedAt: new Date().toISOString(),
         version: STORAGE_VERSION,
       });

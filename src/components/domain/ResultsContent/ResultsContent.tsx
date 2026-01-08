@@ -3,21 +3,24 @@ import ShareButton from "@/components/domain/ResultsContent/ShareButton/ShareBut
 import MobileResultsDisplay from "@/components/domain/ResultsContent/MobileResultsDisplay/MobileResultsDisplay";
 import DesktopResultsDisplay from "@/components/domain/ResultsContent/DesktopResultsDisplay/DesktopResultsDisplay";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
+import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 import { cn } from "@/lib/utils";
 
 interface ResultsContentProps {
-  puzzleId: number;
+  dayNumber: number;
   results: BatchGuessValidationView;
   guesses: Map<number, number | null>;
+  puzzles: GuessrPuzzleView[];
   variant: string;
   showGauge?: boolean;
   className?: string;
 }
 
 const ResultsContent = ({
-  puzzleId,
+  dayNumber,
   results,
   guesses,
+  puzzles,
   variant,
   className,
 }: ResultsContentProps) => {
@@ -29,15 +32,15 @@ const ResultsContent = ({
 
       {/* Share Button Section */}
       <div className="px-6 py-4 flex justify-center border-b">
-        <ShareButton puzzleId={puzzleId} results={results} />
+        <ShareButton dayNumber={dayNumber} variant={variant} results={results} />
       </div>
 
       {/* Results Display Section */}
       <div className="touch:block desktop:hidden">
-        <MobileResultsDisplay results={results.results} guesses={guesses} variant={variant} />
+        <MobileResultsDisplay results={results.results} guesses={guesses} puzzles={puzzles} variant={variant} />
       </div>
       <div className="touch:hidden desktop:block">
-        <DesktopResultsDisplay results={results.results} guesses={guesses} variant={variant} />
+        <DesktopResultsDisplay results={results.results} guesses={guesses} puzzles={puzzles} variant={variant} />
       </div>
     </div>
   );

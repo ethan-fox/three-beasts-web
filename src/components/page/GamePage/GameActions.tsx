@@ -28,7 +28,7 @@ const GameActions = ({ canSubmit, isSubmitting, onSubmit }: GameActionsProps) =>
       <Button
         onClick={onSubmit}
         disabled={!canSubmit || isSubmitting}
-        className={`w-auto ${!canSubmit || isSubmitting ? "" : "desktop:cursor-pointer"}`}
+        className="w-auto"
       >
         {isSubmitting ? (
           "Submitting..."
