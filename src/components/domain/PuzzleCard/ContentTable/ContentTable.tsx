@@ -3,12 +3,12 @@ import type { ContentItemView } from "@/model/view/ContentItemView";
 
 interface ContentTableProps {
   content: ContentItemView[];
-  fadeColor: string;
 }
 
-const ContentTable = ({ content, fadeColor }: ContentTableProps) => {
+const ContentTable = ({ content }: ContentTableProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showFade, setShowFade] = useState(false);
+  const [showTopFade, setShowTopFade] = useState(false);
+  const [showBottomFade, setShowBottomFade] = useState(false);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -16,8 +16,10 @@ const ContentTable = ({ content, fadeColor }: ContentTableProps) => {
 
     const checkScroll = () => {
       const hasOverflow = el.scrollHeight > el.clientHeight;
+      const isAtTop = el.scrollTop < 8;
       const isAtBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8;
-      setShowFade(hasOverflow && !isAtBottom);
+      setShowTopFade(hasOverflow && !isAtTop);
+      setShowBottomFade(hasOverflow && !isAtBottom);
     };
 
     checkScroll();
@@ -53,8 +55,13 @@ const ContentTable = ({ content, fadeColor }: ContentTableProps) => {
         ))}
       </div>
       <div
-        className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t ${fadeColor} to-transparent pointer-events-none transition-opacity duration-300 ${
-          showFade ? "opacity-100" : "opacity-0"
+        className={`absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-black/30 dark:from-white/30 to-transparent pointer-events-none transition-opacity duration-300 ${
+          showTopFade ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/30 dark:from-white/30 to-transparent pointer-events-none transition-opacity duration-300 ${
+          showBottomFade ? "opacity-100" : "opacity-0"
         }`}
       />
     </div>

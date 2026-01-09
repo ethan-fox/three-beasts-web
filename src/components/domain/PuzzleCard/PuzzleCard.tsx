@@ -41,7 +41,7 @@ const PuzzleCard = forwardRef<HTMLInputElement, PuzzleCardProps>(
             disabled={disabled}
           />
 
-          <ContentTable content={puzzle.content} fadeColor={config.color.fade} />
+          <ContentTable content={puzzle.content} />
         </CardContent>
       </Card>
     );

@@ -16,10 +16,9 @@ interface MobileResultsDisplayProps {
   results: PuzzleResultView[];
   guesses: Map<number, number | null>;
   puzzles: GuessrPuzzleView[];
-  variant: string;
 }
 
-const MobileResultsDisplay = ({ results, guesses, puzzles, variant }: MobileResultsDisplayProps) => {
+const MobileResultsDisplay = ({ results, guesses, puzzles }: MobileResultsDisplayProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -60,6 +59,8 @@ const MobileResultsDisplay = ({ results, guesses, puzzles, variant }: MobileResu
             const userGuess = guesses.get(result.id);
             const puzzle = puzzles.find(p => p.id === result.id);
 
+            if (!puzzle) return null;
+
             return (
               <CarouselItem key={result.id} className="py-4 pr-4 pl-6">
                 <ResultCard
@@ -67,7 +68,6 @@ const MobileResultsDisplay = ({ results, guesses, puzzles, variant }: MobileResu
                   puzzleNumber={index + 1}
                   userGuess={userGuess}
                   puzzle={puzzle}
-                  variant={variant}
                 />
               </CarouselItem>
             );

@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from "react";
-import { Card } from "@/components/ui/card";
 import PageContainer from "@/components/custom/PageContainer";
 import GameBanner from "@/components/domain/GameBanner/GameBanner";
 import NavigationTray from "@/components/domain/NavigationTray/NavigationTray";
@@ -75,24 +74,24 @@ const GamePage = () => {
         )}
 
         {showResults && (
-          <Card className="mt-8 bg-transparent border-none shadow-none">
-            <ResultsContent
-              dayNumber={puzzles!.day_number ?? 0}
-              results={completedPuzzle?.results || results!}
-              puzzles={completedPuzzle?.puzzles || puzzles!.puzzles}
-              variant={selectedVariant}
-              guesses={
-                completedPuzzle
-                  ? new Map(
-                      Object.entries(completedPuzzle.guesses).map(([k, v]) => [
-                        Number(k),
-                        v,
-                      ])
-                    )
-                  : guesses
-              }
-            />
-          </Card>
+          <ResultsContent
+            dayNumber={puzzles!.day_number ?? 0}
+            guessrId={puzzles!.id}
+            results={completedPuzzle?.results || results!}
+            puzzles={completedPuzzle?.puzzles || puzzles!.puzzles}
+            variant={selectedVariant}
+            isCachedCompletion={!!completedPuzzle}
+            guesses={
+              completedPuzzle
+                ? new Map(
+                    Object.entries(completedPuzzle.guesses).map(([k, v]) => [
+                      Number(k),
+                      v,
+                    ])
+                  )
+                : guesses
+            }
+          />
         )}
 
         {showPuzzles && (

@@ -4,6 +4,7 @@ import type { GuessrDetailView } from "@/model/view/GuessrDetailView";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 import type { GuessSubmission } from "@/model/api/GuessSubmission";
 import type { HowToPlayView } from "@/model/view/HowToPlayView";
+import type { DayStatsView } from "@/model/view/DayStatsView";
 
 class GuessrClient {
   async listGuessrs(date?: string, variant?: string): Promise<GuessrItemView[]> {
@@ -37,6 +38,13 @@ class GuessrClient {
 
   async fetchHowToPlay(): Promise<HowToPlayView> {
     const response = await threeBeastsBackend.get<HowToPlayView>(`/guessr/how-to-play`);
+    return response.data;
+  }
+
+  async getStats(guessrId: number): Promise<DayStatsView> {
+    const response = await threeBeastsBackend.get<DayStatsView>(
+      `/v1/guessr/${guessrId}/stats`
+    );
     return response.data;
   }
 }
