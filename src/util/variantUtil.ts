@@ -8,6 +8,7 @@ export interface VariantConfig {
   color: {
     gradient: string;
     glow: string;
+    fade: string;
   };
 }
 
@@ -20,6 +21,7 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     color: {
       gradient: "from-amber-400/30 via-yellow-500/20 to-amber-600/30",
       glow: "shadow-amber-500/40",
+      fade: "from-amber-900/40",
     },
   },
   baseball: {
@@ -29,6 +31,7 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     color: {
       gradient: "from-blue-500/25 via-card to-blue-400/15",
       glow: "shadow-blue-500/30",
+      fade: "from-blue-900/40",
     },
   },
   football: {
@@ -38,6 +41,7 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     color: {
       gradient: "from-red-500/25 via-card to-red-400/15",
       glow: "shadow-red-500/30",
+      fade: "from-red-900/40",
     },
   },
   basketball: {
@@ -47,6 +51,7 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     color: {
       gradient: "from-green-500/25 via-card to-green-400/15",
       glow: "shadow-green-500/30",
+      fade: "from-green-900/40",
     },
   },
   ncaa_basketball: {
@@ -56,6 +61,7 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
     color: {
       gradient: "from-purple-500/25 via-card to-purple-400/15",
       glow: "shadow-purple-500/30",
+      fade: "from-purple-900/40",
     },
   },
 };

@@ -41,6 +41,7 @@ const GamePage = () => {
     const validationResults = await submitGuesses(puzzles.id, { guesses: guessArray });
     if (validationResults) {
       saveCompletion(guesses, validationResults, puzzles.puzzles);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [puzzles, guesses, submitGuesses, saveCompletion]);
 

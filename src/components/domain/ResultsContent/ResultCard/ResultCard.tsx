@@ -47,7 +47,7 @@ const ResultCard = ({ result, puzzleNumber, userGuess, puzzle, variant }: Result
         <CardTitle className="text-lg text-center">Puzzle {puzzleNumber}</CardTitle>
       </CardHeader>
 
-      <div className="relative overflow-hidden h-40">
+      <div className="relative overflow-hidden h-[clamp(14rem,32vh,22rem)]">
         <div
           className={cn(
             "flex transition-transform duration-300 ease-in-out h-full",
@@ -72,13 +72,15 @@ const ResultCard = ({ result, puzzleNumber, userGuess, puzzle, variant }: Result
           </CardContent>
 
           {/* Puzzle Panel */}
-          <CardContent className="w-1/2 h-full overflow-y-auto text-left">
+          <CardContent className="w-1/2 h-full text-left flex flex-col">
             {puzzle ? (
-              <div className="space-y-3">
+              <>
                 <p className="font-semibold">{puzzle.hint.title}</p>
-                <hr className="border-foreground/20" />
-                <ContentTable content={puzzle.content} />
-              </div>
+                <hr className="border-foreground/20 my-3" />
+                <div className="flex-1 min-h-0">
+                  <ContentTable content={puzzle.content} fadeColor={config.color.fade} />
+                </div>
+              </>
             ) : (
               <p className="text-sm text-muted-foreground">Puzzle data not available</p>
             )}
