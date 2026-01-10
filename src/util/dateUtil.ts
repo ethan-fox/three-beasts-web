@@ -18,22 +18,6 @@ export const formatDateForApi = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-// DEPRECATED: No longer used by DateSelector.
-// DateSelector now uses API summary data.
-// Consider removing if no other components use this.
-export const getAvailableDateRange = (): Date[] => {
-  const today = getCurrentEasternDate();
-  const dates: Date[] = [];
-
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
-    dates.push(date);
-  }
-
-  return dates;
-};
-
 export const formatDateForDisplay = (date: Date): string => {
   return new Intl.DateTimeFormat("en-US", {
     month: "long",

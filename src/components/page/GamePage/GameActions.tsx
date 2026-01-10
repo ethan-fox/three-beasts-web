@@ -24,7 +24,8 @@ const GameActions = ({ canSubmit, isSubmitting, onSubmit }: GameActionsProps) =>
   }, [canSubmit, isSubmitting, onSubmit]);
 
   return (
-    <div className="mt-[clamp(2rem,4vh,4rem)] mb-[clamp(2rem,4vh,4rem)] flex justify-center">
+    <div className="my-[clamp(1rem,2vh,2rem)] flex flex-col items-center gap-3">
+      <p className="text-sm text-muted-foreground">Answer all 3 puzzles to submit.</p>
       <Button
         onClick={onSubmit}
         disabled={!canSubmit || isSubmitting}

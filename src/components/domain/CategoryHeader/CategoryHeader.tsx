@@ -1,3 +1,4 @@
+import { Separator } from "@/components/ui/separator";
 import { getVariantConfig } from "@/util/variantUtil";
 
 interface CategoryHeaderProps {
@@ -19,6 +20,7 @@ const CategoryHeader = ({ variant, day_number }: CategoryHeaderProps) => {
       {config.subtext && (
         <p className="text-sm text-muted-foreground">{config.subtext}</p>
       )}
+      <Separator className="mt-4" />
     </div>
   );
 };
