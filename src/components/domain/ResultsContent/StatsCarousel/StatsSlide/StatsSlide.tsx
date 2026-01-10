@@ -2,9 +2,11 @@ import { Card } from "@/components/ui/card";
 import ScoreHistogram from "@/components/domain/ResultsContent/StatsCarousel/ScoreHistogram/ScoreHistogram";
 import ScorePie from "@/components/domain/ResultsContent/StatsCarousel/ScorePie/ScorePie";
 import PuzzlePanel from "@/components/domain/ResultsContent/PuzzlePanel/PuzzlePanel";
+import ShareButton from "@/components/domain/ResultsContent/ShareButton/ShareButton";
 import { getMotivationalMessage } from "@/util/resultUtil";
 import type { PuzzleResultView } from "@/model/view/PuzzleResultView";
 import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
+import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 
 interface OverallSlideProps {
   type: "overall";
@@ -12,6 +14,9 @@ interface OverallSlideProps {
   histogram: number[];
   avgScore: number;
   userScore: number;
+  dayNumber: number;
+  variant: string;
+  results: BatchGuessValidationView;
 }
 
 interface PuzzleSlideProps {
@@ -44,13 +49,20 @@ const StatsSlide = (props: StatsSlideProps) => {
 
       <div className="flex-1 min-h-0 mt-2">
         {type === "overall" ? (
-          <div className="flex items-center justify-between h-full px-4 gap-4">
-            <div className="w-[clamp(5rem,40%,8rem)] aspect-square shrink-0">
+          <div className="flex items-center justify-center h-full gap-4 px-2">
+            <div className="w-[clamp(6rem,35%,9rem)] aspect-square shrink-0">
               <ScorePie score={userScore} compact />
             </div>
-            <p className="text-sm text-muted-foreground text-right flex-1">
-              {getMotivationalMessage(userScore)}
-            </p>
+            <div className="flex flex-col items-center gap-4 flex-1">
+              <p className="text-sm text-muted-foreground text-center">
+                {getMotivationalMessage(userScore)}
+              </p>
+              <ShareButton
+                dayNumber={props.dayNumber}
+                variant={props.variant}
+                results={props.results}
+              />
+            </div>
           </div>
         ) : (
           <PuzzlePanel

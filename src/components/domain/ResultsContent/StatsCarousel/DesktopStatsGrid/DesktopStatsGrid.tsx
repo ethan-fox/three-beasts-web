@@ -7,10 +7,16 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import CarouselHints from "@/components/custom/CarouselHints";
 import ScoreHistogram from "@/components/domain/ResultsContent/StatsCarousel/ScoreHistogram/ScoreHistogram";
 import ScorePie from "@/components/domain/ResultsContent/StatsCarousel/ScorePie/ScorePie";
 import PuzzlePanel from "@/components/domain/ResultsContent/PuzzlePanel/PuzzlePanel";
+import ShareButton from "@/components/domain/ResultsContent/ShareButton/ShareButton";
 import { getMotivationalMessage } from "@/util/resultUtil";
 import type { DayStatsView } from "@/model/view/DayStatsView";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
@@ -21,6 +27,8 @@ interface DesktopStatsGridProps {
   results: BatchGuessValidationView;
   puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
+  dayNumber: number;
+  variant: string;
 }
 
 const DesktopStatsGrid = ({
@@ -28,9 +36,12 @@ const DesktopStatsGrid = ({
   results,
   puzzles,
   guesses,
+  dayNumber,
+  variant,
 }: DesktopStatsGridProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [showNextTooltip, setShowNextTooltip] = useState(true);
 
   useEffect(() => {
     if (!api) return;
@@ -70,14 +81,21 @@ const DesktopStatsGrid = ({
                   userScore={results.overall_score}
                 />
               </div>
-              <div className="flex flex-col items-center justify-center h-full">
-                <h3 className="text-xl font-semibold mb-2">Overall Score</h3>
-                <div className="w-[clamp(10rem,80%,14rem)] aspect-square">
-                  <ScorePie score={results.overall_score} />
+              <div className="flex flex-col items-center justify-center h-full gap-4">
+                <h3 className="text-xl font-semibold">Overall Score</h3>
+                <div className="flex flex-col items-center">
+                  <div className="w-[clamp(10rem,80%,14rem)] aspect-square">
+                    <ScorePie score={results.overall_score} />
+                  </div>
+                  <p className="text-sm text-muted-foreground text-center">
+                    {getMotivationalMessage(results.overall_score)}
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2 text-center">
-                  {getMotivationalMessage(results.overall_score)}
-                </p>
+                <ShareButton
+                  dayNumber={dayNumber}
+                  variant={variant}
+                  results={results}
+                />
               </div>
             </div>
           </CarouselItem>
@@ -96,12 +114,15 @@ const DesktopStatsGrid = ({
             return (
               <CarouselItem key={puzzle.id} className="h-full">
                 <div className="grid grid-cols-3 gap-6 h-full px-4">
-                  <div className="col-span-2 h-full bg-zinc-500/10 rounded-lg">
-                    <ScoreHistogram
-                      histogram={puzzleStats.histogram}
-                      avgScore={puzzleStats.avg_score}
-                      userScore={userPuzzleScore}
-                    />
+                  <div className="col-span-2 h-full flex flex-col">
+                    <p className="text-xs text-muted-foreground mb-1">Global Stats</p>
+                    <div className="flex-1 bg-zinc-500/10 rounded-lg">
+                      <ScoreHistogram
+                        histogram={puzzleStats.histogram}
+                        avgScore={puzzleStats.avg_score}
+                        userScore={userPuzzleScore}
+                      />
+                    </div>
                   </div>
                   <div className="flex flex-col h-full min-h-0">
                     <h3 className="text-lg font-semibold mb-3 shrink-0">
@@ -121,7 +142,19 @@ const DesktopStatsGrid = ({
           })}
         </CarouselContent>
         <CarouselPrevious />
-        <CarouselNext />
+        <Tooltip open={showNextTooltip && current === 0}>
+          <TooltipTrigger asChild>
+            <span
+              className="absolute top-1/2 -right-12 -translate-y-1/2 touch:hidden"
+              onMouseLeave={() => setShowNextTooltip(false)}
+            >
+              <CarouselNext className="relative right-0 top-0 translate-y-0" />
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="left" sideOffset={8} className="touch:hidden">
+            Click here<br />to see more stats!
+          </TooltipContent>
+        </Tooltip>
       </Carousel>
     </div>
   );

@@ -18,6 +18,8 @@ interface StatsCarouselProps {
   puzzles: GuessrPuzzleView[];
   guesses: Map<number, number | null>;
   isLoading: boolean;
+  dayNumber: number;
+  variant: string;
 }
 
 const StatsCarousel = ({
@@ -26,6 +28,8 @@ const StatsCarousel = ({
   puzzles,
   guesses,
   isLoading,
+  dayNumber,
+  variant,
 }: StatsCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -66,7 +70,7 @@ const StatsCarousel = ({
   return (
     <div className="w-full">
       {/* Mobile: Carousel */}
-      <div className="touch:block desktop:hidden">
+      <div className="touch:block desktop:hidden pb-8">
         <CarouselHints
           hint="Results:"
           puzzleCount={slideCount}
@@ -74,7 +78,12 @@ const StatsCarousel = ({
           api={api}
         />
 
-        <Carousel setApi={setApi} className="w-full touch-pan-y h-[30rem]">
+        <Carousel setApi={setApi} className="w-full touch-pan-y h-[34rem] relative">
+          {current === 0 && (
+            <div className="absolute top-1/2 -translate-y-1/2 right-4 z-10 bg-popover border border-border rounded-md px-3 py-1.5 text-xs text-muted-foreground shadow-md animate-in fade-in-0">
+              Swipe to see more &gt;&gt;&gt;
+            </div>
+          )}
           <CarouselContent className="h-full">
             <CarouselItem className="h-full">
               <StatsSlide
@@ -83,6 +92,9 @@ const StatsCarousel = ({
                 histogram={dayStats.histogram}
                 avgScore={dayStats.avg_score}
                 userScore={results.overall_score}
+                dayNumber={dayNumber}
+                variant={variant}
+                results={results}
               />
             </CarouselItem>
 
@@ -122,6 +134,8 @@ const StatsCarousel = ({
           results={results}
           puzzles={puzzles}
           guesses={guesses}
+          dayNumber={dayNumber}
+          variant={variant}
         />
       </div>
     </div>

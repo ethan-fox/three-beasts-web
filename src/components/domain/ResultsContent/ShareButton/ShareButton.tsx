@@ -3,17 +3,19 @@ import { Share, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generateShareText, shareResults } from "@/util/shareUtil";
 import { getVariantConfig } from "@/util/variantUtil";
+import { cn } from "@/lib/utils";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 
 interface ShareButtonProps {
   dayNumber: number;
   variant: string;
   results: BatchGuessValidationView;
+  className?: string;
 }
 
 type ShareState = "idle" | "copied" | "failed";
 
-const ShareButton = ({ dayNumber, variant, results }: ShareButtonProps) => {
+const ShareButton = ({ dayNumber, variant, results, className }: ShareButtonProps) => {
   const [shareState, setShareState] = useState<ShareState>("idle");
 
   const handleShare = async () => {
@@ -69,7 +71,7 @@ const ShareButton = ({ dayNumber, variant, results }: ShareButtonProps) => {
       onClick={handleShare}
       variant={getButtonVariant()}
       size="default"
-      className="gap-2 cursor-pointer w-[clamp(12rem,20vw,15rem)]"
+      className={cn("gap-2 cursor-pointer w-[clamp(12rem,20vw,15rem)]", className)}
     >
       {getButtonContent()}
     </Button>

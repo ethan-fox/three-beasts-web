@@ -29,6 +29,7 @@ const ScoreHistogram = ({
   const { theme, colors } = useVictoryTheme();
 
   const barColor = colors.primary;
+  const barStrokeColor = "#009966";
   const avgLineColor = colors.avg;
   const userLineColor = colors.user;
   const axisColor = colors.subtle;
@@ -67,6 +68,18 @@ const ScoreHistogram = ({
           domainPadding={{ x: 10 }}
           domain={{ x: [-0.5, 9.5], y: [0, maxCount * 1.25] }}
         >
+        <VictoryLabel
+          text="Global Stats"
+          x={200}
+          y={0}
+          textAnchor="middle"
+          style={{
+            fontSize: 10,
+            fill: colors.muted,
+            fontWeight: "500",
+          }}
+        />
+
         <VictoryAxis
           tickValues={[0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5]}
           tickFormat={(t) => `${(t + 0.5) * 10}`}
@@ -84,7 +97,12 @@ const ScoreHistogram = ({
         <VictoryBar
           data={histogramData}
           style={{
-            data: { fill: barColor, width: 18 },
+            data: {
+              fill: barColor,
+              stroke: barStrokeColor,
+              strokeWidth: 1.5,
+              width: 34,
+            },
           }}
           cornerRadius={{ top: 3 }}
         />
