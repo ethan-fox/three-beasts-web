@@ -111,7 +111,7 @@ const ScoreHistogram = ({
 
         <VictoryLine
           data={[
-            { x: avgBucketPos, y: maxCount * 1.15, label: avgLabel },
+            { x: avgBucketPos, y: maxCount * 0.95, label: avgLabel },
             { x: avgBucketPos, y: 0 },
           ]}
           style={{
@@ -131,7 +131,7 @@ const ScoreHistogram = ({
 
         <VictoryLine
           data={[
-            { x: userBucketPos, y: maxCount * 1.15, label: userLabel },
+            { x: userBucketPos, y: maxCount * 0.95, label: userLabel },
             { x: userBucketPos, y: 0 },
           ]}
           style={{
@@ -143,7 +143,7 @@ const ScoreHistogram = ({
           }}
           labelComponent={
             <VictoryPortal>
-              <VictoryLabel dy={-8} />
+              <VictoryLabel dy={-22} />
             </VictoryPortal>
           }
         />

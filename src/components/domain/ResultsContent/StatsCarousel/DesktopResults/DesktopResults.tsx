@@ -115,7 +115,6 @@ const DesktopResults = ({
               <CarouselItem key={puzzle.id} className="h-full">
                 <div className="grid grid-cols-3 gap-6 h-full px-4">
                   <div className="col-span-2 h-full flex flex-col">
-                    <p className="text-xs text-muted-foreground mb-1">Global Stats</p>
                     <div className="flex-1 bg-zinc-500/10 rounded-lg">
                       <ScoreHistogram
                         histogram={puzzleStats.histogram}
