@@ -57,18 +57,13 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
   ncaa_basketball: {
     key: "ncaa_basketball",
     displayName: "NCAA Basketball",
-    emoji: "🎓",
+    emoji: "🎓🏀",
     color: {
       gradient: "from-purple-500/25 via-card to-purple-400/15",
       glow: "shadow-purple-500/30",
       fade: "from-purple-900/40",
     },
   },
-};
-
-export const getVariantCardClasses = (variant: string): string => {
-  const config = getVariantConfig(variant);
-  return `bg-gradient-to-br ${config.color.gradient} shadow-lg ${config.color.glow} border rounded-xl`;
 };
 
 export const DEFAULT_VARIANT = "default";
@@ -81,13 +76,4 @@ export const getAvailableVariants = (summary: GuessrItemView[]): string[] => {
   const variants = new Set<string>();
   summary.forEach((item) => variants.add(item.variant));
   return Array.from(variants);
-};
-
-export const groupByVariant = (items: GuessrItemView[]): Map<string, GuessrItemView[]> => {
-  const grouped = new Map<string, GuessrItemView[]>();
-  items.forEach((item) => {
-    const existing = grouped.get(item.variant) || [];
-    grouped.set(item.variant, [...existing, item]);
-  });
-  return grouped;
 };

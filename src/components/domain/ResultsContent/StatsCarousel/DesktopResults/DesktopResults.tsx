@@ -22,7 +22,7 @@ import type { DayStatsView } from "@/model/view/DayStatsView";
 import type { BatchGuessValidationView } from "@/model/view/BatchGuessValidationView";
 import type { GuessrPuzzleView } from "@/model/view/GuessrPuzzleView";
 
-interface DesktopStatsGridProps {
+interface DesktopResultsProps {
   dayStats: DayStatsView;
   results: BatchGuessValidationView;
   puzzles: GuessrPuzzleView[];
@@ -31,14 +31,14 @@ interface DesktopStatsGridProps {
   variant: string;
 }
 
-const DesktopStatsGrid = ({
+const DesktopResults = ({
   dayStats,
   results,
   puzzles,
   guesses,
   dayNumber,
   variant,
-}: DesktopStatsGridProps) => {
+}: DesktopResultsProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [showNextTooltip, setShowNextTooltip] = useState(true);
@@ -160,4 +160,4 @@ const DesktopStatsGrid = ({
   );
 };
 
-export default DesktopStatsGrid;
+export default DesktopResults;
