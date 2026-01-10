@@ -47,7 +47,7 @@ const ScoreHistogram = ({
   const userLabel = `You (${userScore})`;
 
   return (
-    <div className="w-full h-full flex items-center justify-center overflow-visible">
+    <div className="w-full h-full flex items-center justify-center overflow-visible pointer-events-none touch-pan-y">
       <div className="w-full h-full overflow-visible">
         <VictoryChart
           theme={theme}
@@ -59,6 +59,8 @@ const ScoreHistogram = ({
                 height: "100%",
                 width: "100%",
                 maxHeight: "100%",
+                pointerEvents: "none",
+                touchAction: "pan-y",
               }}
               responsive={true}
               preserveAspectRatio="xMidYMid meet"
