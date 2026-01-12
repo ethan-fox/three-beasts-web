@@ -64,6 +64,16 @@ export const VARIANT_CONFIG: Record<string, VariantConfig> = {
       fade: "from-purple-900/40",
     },
   },
+  ncaa_football: {
+    key: "ncaa_football",
+    displayName: "NCAA Football",
+    emoji: "🎓🏈",
+    color: {
+      gradient: "from-orange-500/25 via-card to-orange-400/15",
+      glow: "shadow-orange-500/30",
+      fade: "from-orange-900/40",
+    },
+  },
 };
 
 export const DEFAULT_VARIANT = "default";
